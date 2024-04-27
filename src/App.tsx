@@ -1,74 +1,18 @@
-// import React, { useEffect, useState } from "react";
-// import { fetchChatCompletion } from "./apiService";
-// import { saveAs } from "file-saver";
-// import SpeechToText from "./SpeechTotext";
-// import { deleteAllResponses, saveResponse } from "./services/supabaseService";
-// import MessageDisplay from "./MessageDisplay";
-// import { addProduct, getProducts, removeProduct } from "./database";
-// import './style.css';
-
-// interface Product {
-//   name: string;
-// }
-
-// const App: React.FC = () => {
-//   const [input, setInput] = useState("");
-//   const [response, setResponse] = useState({});
-
-//   const handleTranscription = (transcript: string) => {
-//     setInput(transcript);
-//   };
-
-//   const handleSubmit = async () => {
-//     const result = await fetchChatCompletion(input);
-//     await saveResponse(result);
-//     setResponse(result);
-//     //saveResponseToFile(result);
-//     console.log('response', response);
-//   };
-
-//   const handleClear = () => {
-//     setInput("");
-//     setResponse({});
-//   };
-
-//   return (
-//     <div>
-//       <button onClick={() => deleteAllResponses().catch(console.error)}>
-//         Delete
-//       </button>
-//       <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
-//       <input
-//         type="text"
-//         value={input}
-//         onChange={(e) => setInput(e.target.value)}
-//       />
-//       <button onClick={handleSubmit}>Send</button>
-//       {/* <pre>{JSON.stringify(response, null, 2)}</pre> */}
-//       <MessageDisplay />
-
 import React, { useEffect, useState } from 'react'
-import { fetchChatCompletion } from './apiService'
+import { createPromptForOpenAI, fetchChatCompletion } from './apiService'
 import styles from './app.module.css'
 import SpeechToText from './SpeechTotext'
 
 import { addProduct, getProducts, removeProduct, deleteDatabase } from './database'
 import { knownProducts } from './knownProducts'
-
-interface Product {
-	id: number
-	name: string
-}
+import { useStore } from './store/useStore'
 
 const App: React.FC = () => {
 	const [input, setInput] = useState('')
-	const [inputProduct, setInputProduct] = useState('') // Oddzielny stan dla inputu produktów
 	const [response, setResponse] = useState({})
-	const [products, setProducts] = useState<Product[]>([])
-	const [showQuickMealPanel, setShowQuickMealPanel] = useState(false)
-	const [quickMealInput, setQuickMealInput] = useState('')
 	const [showPantry, setShowPantry] = useState(false)
 	const [showMealPlan, setShowMealPlan] = useState(false)
+
 	const normalizeText = (text: string) =>
 		text
 			.normalize('NFD')
@@ -77,10 +21,28 @@ const App: React.FC = () => {
 	useEffect(() => {
 		fetchProducts()
 	}, [])
+
 	const fetchProducts = async () => {
 		const items = await getProducts()
 		setProducts(items)
 	}
+
+	const {
+		inputProduct,
+		setInputProduct,
+		products,
+		setProducts,
+		showQuickMealPanel,
+		setShowQuickMealPanel,
+		quickMealInput,
+		setQuickMealInput,
+		setResult,
+		results,
+	} = useStore()
+
+	useEffect(() => {
+		console.log(results)
+	}, [results])
 
 	const handleAddProduct = async () => {
 		let inputLower = normalizeText(inputProduct)
@@ -127,6 +89,12 @@ const App: React.FC = () => {
 	const toggleMealPlan = () => {
 		setShowMealPlan(!showMealPlan)
 	}
+	const handleGenerateMeal = async () => {
+		const prompt = createPromptForOpenAI(quickMealInput)
+		const response = await fetchChatCompletion(prompt)
+		console.log(response) //Tutaj możesz przetworzyć odpowiedź, np. wyświetlić ją użytkownikowi
+		setResult(response)
+	}
 
 	return (
 		<div className={styles.container}>
@@ -162,7 +130,7 @@ const App: React.FC = () => {
 					/>
 					<div className={styles.popupButtons}>
 						<button onClick={() => setShowQuickMealPanel(false)}>ZAMKNIJ</button>
-						<button onClick={() => console.log('Generating meal...')}>GENERUJ POSIŁEK</button>
+						<button onClick={handleGenerateMeal}>GENERUJ POSIŁEK</button>
 					</div>
 				</div>
 			)}

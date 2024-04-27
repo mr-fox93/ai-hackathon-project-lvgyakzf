@@ -5,6 +5,11 @@ interface Product {
   name: string;
 }
 
+interface Result {
+  id: string;
+  message: string;
+}
+
 interface StoreProps {
   inputProduct: string;
   setInputProduct: (inputProduct: string) => void;
@@ -16,6 +21,8 @@ interface StoreProps {
   setShowQuickMealPanel: (showQuickMealPanel: boolean) => void;
   quickMealInput: string;
   setQuickMealInput: (quickMealInput: string) => void;
+  results: Result[];
+  setResult: (result: Result[] | ((prevResults: Result[]) => Result[])) => void;
 }
 
 export const useStore = create<StoreProps>((set) => ({
@@ -34,4 +41,9 @@ export const useStore = create<StoreProps>((set) => ({
     set({ showQuickMealPanel }),
   quickMealInput: "",
   setQuickMealInput: (quickMealInput: string) => set({ quickMealInput }),
+  results: [],
+  setResult: (results: Result[] | ((prevResults: Result[]) => Result[])) =>
+    set((state) => ({
+      results: typeof results === "function" ? results(state.results) : results,
+    })),
 }));
