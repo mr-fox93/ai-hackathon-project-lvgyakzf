@@ -67,5 +67,5 @@ const SpeechToText = ({ onTranscript, onClear }) => {
     </div>
   );
 };
-
+ 
 export default SpeechToText;

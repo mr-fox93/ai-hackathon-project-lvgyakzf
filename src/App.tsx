@@ -53,6 +53,7 @@ import styles from './app.module.css'
 import SpeechToText from './SpeechTotext'
 
 import { addProduct, getProducts, removeProduct, deleteDatabase } from './database'
+import { knownProducts } from './knownProducts'
 
 interface Product {
 	id: number
@@ -68,7 +69,8 @@ const App: React.FC = () => {
 	const [quickMealInput, setQuickMealInput] = useState('')
 	const [showPantry, setShowPantry] = useState(false)
 	const [showMealPlan, setShowMealPlan] = useState(false)
-
+  const normalizeText = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  
 	useEffect(() => {
 		fetchProducts()
 	}, [])
@@ -77,15 +79,32 @@ const App: React.FC = () => {
 		setProducts(items)
 	}
 
-	const handleAddProduct = async () => {
-		if (inputProduct.trim() !== '') {
-			const newProduct = await addProduct({ name: inputProduct })
-			if (newProduct.id) {
-				setProducts(prevProducts => [...prevProducts, newProduct])
-			}
-			setInputProduct('')
-		}
-	}
+  const handleAddProduct = async () => {
+    let inputLower = normalizeText(inputProduct);
+    const productsToAdd = [];
+
+    // Check for known products and add them separately
+    for (const product of knownProducts) {
+      const normalizedProduct = normalizeText(product);
+      if (inputLower.includes(normalizedProduct)) {
+        productsToAdd.push(product); // Add the original name, not normalized
+        inputLower = inputLower.replace(new RegExp(normalizedProduct, 'g'), '');
+      }
+    }
+
+    inputLower.split(' ').forEach(word => {
+      if (word.trim() !== '') productsToAdd.push(word);
+    });
+
+    for (const product of productsToAdd) {
+      const newProduct = await addProduct({ name: product });
+      if (newProduct.id) {
+        setProducts(prev => [...prev, newProduct]);
+      }
+    }
+
+    setInputProduct('');
+  };
 
 	const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
 		await removeProduct(id)
