@@ -18,9 +18,15 @@ const App: React.FC = () => {
     setResponse(result);
     //saveResponseToFile(result);
   };
+
+  const handleClear = () => {
+    setInput("");
+    setResponse({}); 
+  };
+
   return (
     <div>
-      <SpeechToText onTranscript={handleTranscription} />
+  <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
       <input
         type="text"
         value={input}
