@@ -107,14 +107,6 @@ const handleAddProduct = async () => {
 		setResult(response)
 	}
 
-  const togglePantry = () => {
-		setShowPantry(!showPantry)
-	}
-
-	const toggleMealPlan = () => {
-		setShowMealPlan(!showMealPlan)
-	}
-
 
 	return (
     <div className={styles.container}>
