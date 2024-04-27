@@ -1,166 +1,247 @@
-import React, { useEffect, useState } from 'react'
-import { fetchChatCompletion } from './apiService'
-import styles from './app.module.css'
-import { addProduct, getProducts, removeProduct, deleteDatabase } from './database'
-import { useStore } from './store/useStore'
-import SpeechToText from './SpeechTotext'
-import { knownProducts } from './knownProducts'
+import React, { useEffect, useState } from "react";
+import { fetchChatCompletion } from "./apiService";
+import styles from "./app.module.css";
+import {
+  addProduct,
+  getProducts,
+  removeProduct,
+  deleteDatabase,
+} from "./database";
+import { useStore } from "./store/useStore";
+import SpeechToText from "./SpeechTotext";
+import { knownProducts } from "./knownProducts";
 
 const App: React.FC = () => {
-
   const [loading, setLoading] = useState(false);
-	const [response, setResponse] = useState('');
+  const [response, setResponse] = useState("");
 
-	const {
-		inputProduct,
-		setInputProduct,
-		products,
-		setProducts,
-		quickMealInput,
-		setQuickMealInput,
-		setResult,
-		results,
-		showMealPlan,
-		setShowMealPlan,
-		showPantry,
-		setShowPantry,
-	} = useStore()
+  const {
+    inputProduct,
+    setInputProduct,
+    products,
+    setProducts,
+    quickMealInput,
+    setQuickMealInput,
+    setResult,
+    results,
+    showMealPlan,
+    setShowMealPlan,
+    showPantry,
+    setShowPantry,
+  } = useStore();
 
-	const normalizeText = (text: string) =>
-		text
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '')
-			.toLowerCase()
+  const normalizeText = (text: string) =>
+    text
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
 
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-	useEffect(() => {
-		fetchProducts()
-	}, [])
+  useEffect(() => {
+    console.log(results);
+  }, [results]);
 
-	useEffect(() => {
-		console.log(results)
-	}, [results])
+  const fetchProducts = async () => {
+    const items = await getProducts();
+    setProducts(items);
+  };
 
-	const fetchProducts = async () => {
-		const items = await getProducts()
-		setProducts(items)
-	}
+  // const handleAddProduct = async () => {
+  //   let inputLower = normalizeText(inputProduct);
+  //   const productsToAdd = [];
 
-	const handleAddProduct = async () => {
-		let inputLower = normalizeText(inputProduct)
-		const productsToAdd = []
+  //   // Check for known products and add them separately
+  //   for (const product of knownProducts) {
+  //     const normalizedProduct = normalizeText(product);
+  //     if (inputLower.includes(normalizedProduct)) {
+  //       productsToAdd.push(product); // Add the original name, not normalized
+  //       inputLower = inputLower.replace(new RegExp(normalizedProduct, "g"), "");
+  //     }
+  //   }
 
-		// Check for known products and add them separately
-		for (const product of knownProducts) {
-			const normalizedProduct = normalizeText(product)
-			if (inputLower.includes(normalizedProduct)) {
-				productsToAdd.push(product) // Add the original name, not normalized
-				inputLower = inputLower.replace(new RegExp(normalizedProduct, 'g'), '')
-			}
-		}
+  //   // Add remaining single word products
+  //   inputLower.split(" ").forEach((word) => {
+  //     if (word.trim() !== "") productsToAdd.push(word);
+  //   });
 
-		// Add remaining single word products
-		inputLower.split(' ').forEach(word => {
-			if (word.trim() !== '') productsToAdd.push(word)
-		})
+  //   // Add each product to the database and state
+  //   for (const product of productsToAdd) {
+  //     const newProduct = await addProduct({ name: product });
+  //     if (newProduct.id) {
+  //       setProducts((prev) => [...prev, newProduct]);
+  //     }
+  //   }
 
-		// Add each product to the database and state
-		for (const product of productsToAdd) {
-			const newProduct = await addProduct({ name: product })
-			if (newProduct.id) {
-				setProducts(prev => [...prev, newProduct])
-			}
-		}
+  //   setInputProduct("");
+  // };
 
-		setInputProduct('')
-	}
+  const handleAddProduct = async () => {
+    let inputLower = normalizeText(quickMealInput);
+    const productsToAdd = [];
 
-	const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
-		await removeProduct(id)
-		fetchProducts()
-	}
+    // Check for known products and add them separately
+    for (const product of knownProducts) {
+      const normalizedProduct = normalizeText(product);
+      if (inputLower.includes(normalizedProduct)) {
+        productsToAdd.push(product); // Add the original name, not normalized
+        inputLower = inputLower.replace(new RegExp(normalizedProduct, "g"), "");
+      }
+    }
 
-	const handleTranscription = (transcript: string) => {
-		setInputProduct(transcript)
-	}
+    // Add remaining single word products
+    inputLower.split(" ").forEach((word) => {
+      if (word.trim() !== "") productsToAdd.push(word);
+    });
 
-	const handleClear = () => {
-		setInputProduct('')
-	}
+    // Add each product to the database and state
+    for (const product of productsToAdd) {
+      const newProduct = await addProduct({ name: product });
+      if (newProduct.id) {
+        setProducts((prev) => [...prev, newProduct]);
+      }
+    }
 
-	const togglePantry = () => {
-		setShowPantry(!showPantry)
-	}
+    setQuickMealInput("");
+  };
 
-	const toggleMealPlan = () => {
-		setShowMealPlan(!showMealPlan)
-	}
+  //
 
-	// PROMPTY I STRZAŁ DO API
+  const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
+    await removeProduct(id);
+    fetchProducts();
+  };
 
-	const promptQuciky = `Bazując na tych składnikach: ${quickMealInput}, podaj mi prosty i szybki przepis do zrobienia.`
+  const handleTranscription = (transcript: string) => {
+    setInputProduct(transcript);
+  };
+
+  const handleClear = () => {
+    setInputProduct("");
+  };
+
+  const togglePantry = () => {
+    setShowPantry(!showPantry);
+  };
+
+  const toggleMealPlan = () => {
+    setShowMealPlan(!showMealPlan);
+  };
+
+  // PROMPTY I STRZAŁ DO API
+
+  const promptQuciky = `Bazując na tych składnikach: ${quickMealInput}, podaj mi prosty i szybki przepis do zrobienia.`;
+  // const granaryQuick = `Bazując na tych składnikach: ${inputProduct}, podaj mi prosty i szybki przepis do zrobienia.`;
 
   const handleGenerateMeal = async () => {
-		setLoading(true);
-		await fetchChatCompletion(
-			promptQuciky,
-			(response: React.SetStateAction<string>) => {
-				setResponse(response);
-				setLoading(false);
-			},
-			setLoading
-		);
-	}
+    setLoading(true);
+    await fetchChatCompletion(
+      promptQuciky,
+      (response: React.SetStateAction<string>) => {
+        setResponse(response);
+        setLoading(false);
+      },
+      setLoading
+    );
+  };
 
-	return (
-		<div className={styles.container}>
+  // const handleGenerateGranaryMeal = async () => {
+  //   setLoading(true);
+  //   await fetchChatCompletion(
+  //     granaryQuick,
+  //     (response: React.SetStateAction<string>) => {
+  //       setResponse(response);
+  //       setLoading(false);
+  //     },
+  //     setLoading
+  //   );
+  // };
+
+  const handleGenerateGranaryMeal = async () => {
+    setLoading(true);
+    try {
+      const products = await getProducts(); // Pobieranie produktów z bazy danych
+      const productNames = products.map((product) => product.name).join(", "); // Przygotowanie stringa ze składnikami
+      const granaryQuick = `Bazując na tych składnikach: ${productNames}, podaj mi prosty i szybki przepis do zrobienia.`;
+
+      await fetchChatCompletion(
+        granaryQuick,
+        (response: React.SetStateAction<string>) => {
+          setResponse(response);
+          setLoading(false);
+        },
+        setLoading
+      );
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setLoading(false);
+    }
+  };
+
+  const handleUptadeTextArea = (value: string) => {
+    setQuickMealInput(value);
+    setInputProduct(value);
+  };
+
+  return (
+    <div className={styles.container}>
       {loading && <p>Loading...</p>}
-			{response && <p>{response}</p>}
-			{!showPantry && !showMealPlan && (
-				<div className={styles.actionsWrapper}>
-					<button onClick={togglePantry}>SPICHLERZ</button>
-					<button onClick={toggleMealPlan}>JADŁOSPISY</button>
-				</div>
-			)}
+      {response && <p>{response}</p>}
+      {!showPantry && !showMealPlan && (
+        <div className={styles.actionsWrapper}>
+          <button onClick={togglePantry}>SPICHLERZ</button>
+          <button onClick={toggleMealPlan}>JADŁOSPISY</button>
+        </div>
+      )}
 
-			{!showPantry && !showMealPlan && (
-				<div className={styles.mainWrapper}>
-					<SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
-					<textarea
-						className={styles.textarea}
-						value={quickMealInput}
-						onChange={e => setQuickMealInput(e.target.value)}
-						placeholder='Enter products...'
-					/>
-					<div className={styles.buttonsWrapper}>
-						<button onClick={handleAddProduct}>DODAJ DO SPICHLERZA</button>
-						<button onClick={handleGenerateMeal}>SZYBKIE JEDZONKO</button>
-					</div>
-				</div>
-			)}
+      {!showPantry && !showMealPlan && (
+        <div className={styles.mainWrapper}>
+          <SpeechToText
+            onTranscript={handleTranscription}
+            onClear={handleClear}
+          />
+          <textarea
+            className={styles.textarea}
+            value={quickMealInput}
+            onChange={(e) => handleUptadeTextArea(e.target.value)}
+            placeholder="Enter products..."
+          />
+          <div className={styles.buttonsWrapper}>
+            <button onClick={handleAddProduct}>DODAJ DO SPICHLERZA</button>
+            <button onClick={handleGenerateMeal}>SZYBKIE JEDZONKO</button>
+            <button onClick={handleGenerateGranaryMeal}>
+              Jedzonko z Spichlerza
+            </button>
+          </div>
+        </div>
+      )}
 
-			{showPantry && (
-				<div className={styles.pantryContainer}>
-					<ul>
-						{products.map(product => (
-							<li key={product.id}>
-								{product.name}
-								<button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-							</li>
-						))}
-					</ul>
-					<button onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
-				</div>
-			)}
+      {showPantry && (
+        <div className={styles.pantryContainer}>
+          <ul>
+            {products.map((product) => (
+              <li key={product.id}>
+                {product.name}
+                <button onClick={() => handleDeleteProduct(product.id)}>
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
+          <button onClick={deleteDatabase}>CLEAR ALL</button>
+        </div>
+      )}
 
-			{showMealPlan && (
-				<div className={styles.mealPlanContainer}>
-					<button onClick={toggleMealPlan}>ZAMKNIJ JADŁOSPISY</button>
-				</div>
-			)}
-		</div>
+      {showMealPlan && (
+        <div className={styles.mealPlanContainer}>
+          <button onClick={toggleMealPlan}>ZAMKNIJ JADŁOSPISY</button>
+        </div>
+      )}
+    </div>
+  );
+};
 
-	)
-}
-
-export default App
+export default App;
