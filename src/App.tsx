@@ -66,6 +66,8 @@ const App: React.FC = () => {
 	const [products, setProducts] = useState<Product[]>([])
 	const [showQuickMealPanel, setShowQuickMealPanel] = useState(false)
 	const [quickMealInput, setQuickMealInput] = useState('')
+	const [showPantry, setShowPantry] = useState(false)
+	const [showMealPlan, setShowMealPlan] = useState(false)
 
 	useEffect(() => {
 		fetchProducts()
@@ -94,14 +96,24 @@ const App: React.FC = () => {
 		setShowQuickMealPanel(!showQuickMealPanel)
 		setQuickMealInput(inputProduct)
 	}
+	const togglePantry = () => {
+		setShowPantry(!showPantry)
+	}
+
+	const toggleMealPlan = () => {
+		setShowMealPlan(!showMealPlan)
+	}
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.actionsWrapper}>
-				<button>SPICHLERZ</button>
-				<button>JADŁOSPISY</button>
-			</div>
-			{!showQuickMealPanel && (
+			{!showPantry && !showMealPlan && !showQuickMealPanel && (
+				<div className={styles.actionsWrapper}>
+					<button onClick={togglePantry}>SPICHLERZ</button>
+					<button onClick={toggleMealPlan}>JADŁOSPISY</button>
+				</div>
+			)}
+
+			{!showPantry && !showMealPlan && !showQuickMealPanel && (
 				<div className={styles.mainWrapper}>
 					<SpeechToText onTranscript={setInputProduct} onClear={() => setInputProduct('')} />
 					<textarea
@@ -109,7 +121,6 @@ const App: React.FC = () => {
 						value={inputProduct}
 						onChange={e => setInputProduct(e.target.value)}
 						placeholder='Enter products...'
-						style={{ width: '100%', minHeight: '50px' }}
 					/>
 					<div className={styles.buttonsWrapper}>
 						<button onClick={handleAddProduct}>DODAJ DO SPICHLERZA</button>
@@ -132,14 +143,25 @@ const App: React.FC = () => {
 				</div>
 			)}
 
-			<ul>
-				{products.map(product => (
-					<li key={product.id}>
-						{product.name}
-						<button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-					</li>
-				))}
-			</ul>
+			{showPantry && (
+				<div className={styles.pantryContainer}>
+					<ul>
+						{products.map(product => (
+							<li key={product.id}>
+								{product.name}
+								<button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+							</li>
+						))}
+					</ul>
+					<button onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
+				</div>
+			)}
+
+			{showMealPlan && (
+				<div className={styles.mealPlanContainer}>
+					<button onClick={toggleMealPlan}>ZAMKNIJ JADŁOSPISY</button>
+				</div>
+			)}
 		</div>
 	)
 }
