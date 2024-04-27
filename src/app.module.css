@@ -93,7 +93,7 @@
 
 .actionsWrapper {
 	position: absolute;
-	bottom: 300px;
+	bottom: 400px;
 	right: 5px;
 	display: flex;
 	flex-direction: column;
@@ -101,4 +101,14 @@
 	button {
 		height: 40px;
 	}
+}
+
+.pantryContainer {
+    height: 300px;
+    background-color: red;
+}
+
+.mealPlanContainer {
+    height: 300px;
+    background-color: blue;
 }
