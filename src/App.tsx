@@ -6,14 +6,29 @@ import {
   getProducts,
   removeProduct,
   deleteDatabase,
+  getMealPlans,
+  addMealPlan,
+  removeMealPlan,
 } from "./database";
 import { useStore } from "./store/useStore";
 import SpeechToText from "./SpeechTotext";
 import { knownProducts } from "./knownProducts";
 
+interface MealPlan {
+  id: number;
+  content: string;
+}
+
+
 const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
+  const [mealPlans, setMealPlans] = useState([] as MealPlan[]);
+
+  useEffect(() => {
+    getMealPlans();
+  }, []);
+
 
   const {
     inputProduct,
@@ -41,6 +56,10 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    loadMealPlans();
+  }, []);
+
+  useEffect(() => {
     console.log(results);
   }, [results]);
 
@@ -49,34 +68,6 @@ const App: React.FC = () => {
     setProducts(items);
   };
 
-  // const handleAddProduct = async () => {
-  //   let inputLower = normalizeText(inputProduct);
-  //   const productsToAdd = [];
-
-  //   // Check for known products and add them separately
-  //   for (const product of knownProducts) {
-  //     const normalizedProduct = normalizeText(product);
-  //     if (inputLower.includes(normalizedProduct)) {
-  //       productsToAdd.push(product); // Add the original name, not normalized
-  //       inputLower = inputLower.replace(new RegExp(normalizedProduct, "g"), "");
-  //     }
-  //   }
-
-  //   // Add remaining single word products
-  //   inputLower.split(" ").forEach((word) => {
-  //     if (word.trim() !== "") productsToAdd.push(word);
-  //   });
-
-  //   // Add each product to the database and state
-  //   for (const product of productsToAdd) {
-  //     const newProduct = await addProduct({ name: product });
-  //     if (newProduct.id) {
-  //       setProducts((prev) => [...prev, newProduct]);
-  //     }
-  //   }
-
-  //   setInputProduct("");
-  // };
 
   const handleAddProduct = async () => {
     let inputLower = normalizeText(quickMealInput);
@@ -107,7 +98,7 @@ const App: React.FC = () => {
     setQuickMealInput("");
   };
 
-  //
+  
 
   const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
     await removeProduct(id);
@@ -147,17 +138,6 @@ const App: React.FC = () => {
     );
   };
 
-  // const handleGenerateGranaryMeal = async () => {
-  //   setLoading(true);
-  //   await fetchChatCompletion(
-  //     granaryQuick,
-  //     (response: React.SetStateAction<string>) => {
-  //       setResponse(response);
-  //       setLoading(false);
-  //     },
-  //     setLoading
-  //   );
-  // };
 
   const handleGenerateGranaryMeal = async () => {
     setLoading(true);
@@ -185,10 +165,36 @@ const App: React.FC = () => {
     setInputProduct(value);
   };
 
+
+  const handleAddToFavorites = async () => {
+    if (response) {
+      const newMealPlan = await addMealPlan(response);
+      setMealPlans(prev => [...prev, newMealPlan]);
+    }
+  };
+
+  const loadMealPlans = async () => {
+    const loadedMealPlans = await getMealPlans();
+    setMealPlans(loadedMealPlans);
+    console.log("Meal plans loaded:", loadedMealPlans);
+  };
+  
+  
+const handleDeleteMealPlan = async (id: IDBValidKey | IDBKeyRange) => {
+  await removeMealPlan(id);
+  loadMealPlans(); 
+};
+
+
   return (
     <div className={styles.container}>
       {loading && <p>Loading...</p>}
-      {response && <p>{response}</p>}
+      {response && (
+        <>
+          <p>{response}</p>
+          <button onClick={handleAddToFavorites}>Add to Favorites</button>
+        </>
+      )}
       {!showPantry && !showMealPlan && (
         <div className={styles.actionsWrapper}>
           <button onClick={togglePantry}>SPICHLERZ</button>
@@ -237,6 +243,12 @@ const App: React.FC = () => {
 
       {showMealPlan && (
         <div className={styles.mealPlanContainer}>
+          {mealPlans.map((plan, index) => (
+          <div key={index}>
+            <p>{plan.content}</p>
+            <button onClick={() => handleDeleteMealPlan(plan.id)}>Delete</button>
+          </div>
+        ))}
           <button onClick={toggleMealPlan}>ZAMKNIJ JADŁOSPISY</button>
         </div>
       )}
