@@ -7,6 +7,7 @@ import SpeechToText from './SpeechTotext'
 import { knownProducts } from './knownProducts'
 
 const App: React.FC = () => {
+
 	const {
 		inputProduct,
 		setInputProduct,
@@ -29,6 +30,7 @@ const App: React.FC = () => {
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
 			.toLowerCase()
+
 
 	useEffect(() => {
 		fetchProducts()
@@ -81,6 +83,13 @@ const handleAddProduct = async () => {
 	const toggleQuickMealPanel = () => {
 		setShowQuickMealPanel(!showQuickMealPanel)
 		setQuickMealInput(inputProduct)
+	}
+	const togglePantry = () => {
+		setShowPantry(!showPantry)
+	}
+
+	const toggleMealPlan = () => {
+		setShowMealPlan(!showMealPlan)
 	}
 
 	const handleTranscription = (transcript: string) => {
@@ -166,6 +175,7 @@ const handleAddProduct = async () => {
       </div>
     )}
   </div>
+
 	)
 }
 
