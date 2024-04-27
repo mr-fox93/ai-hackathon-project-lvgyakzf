@@ -15,11 +15,17 @@ const App: React.FC = () => {
     setShowQuickMealPanel,
     quickMealInput,
     setQuickMealInput,
+    setResult,
+    results,
   } = useStore();
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    console.log(results);
+  }, [results]);
 
   const fetchProducts = async () => {
     const items = await getProducts();
@@ -57,7 +63,8 @@ const App: React.FC = () => {
   const handleGenerateMeal = async () => {
     const prompt = createPromptForOpenAI(quickMealInput);
     const response = await fetchChatCompletion(prompt);
-    console.log(response); // Tutaj możesz przetworzyć odpowiedź, np. wyświetlić ją użytkownikowi
+    console.log(response); //Tutaj możesz przetworzyć odpowiedź, np. wyświetlić ją użytkownikowi
+    setResult(response);
   };
 
   return (
