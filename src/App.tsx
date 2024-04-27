@@ -7,8 +7,10 @@ import SpeechToText from './SpeechTotext'
 import { knownProducts } from './knownProducts'
 
 const App: React.FC = () => {
+
   const [loading, setLoading] = useState(false);
 	const [response, setResponse] = useState('');
+
 	const {
 		inputProduct,
 		setInputProduct,
@@ -29,6 +31,7 @@ const App: React.FC = () => {
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
 			.toLowerCase()
+
 
 	useEffect(() => {
 		fetchProducts()
@@ -156,6 +159,7 @@ const App: React.FC = () => {
 				</div>
 			)}
 		</div>
+
 	)
 }
 
