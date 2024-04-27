@@ -1,0 +1,40 @@
+/* Checkbox.css */
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+  
+  .checked {
+    background-color: var(--alert);
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  /* Customowe kółko CSS */
+  .custom-checkbox {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%; /* Kółko */
+    border: 2px solid var(--border-color); /* Grubość i kolor obramowania */
+  }
+  
+  .custom-checkbox.checked {
+    background-color: var(--alert); /* Kolor wypełnienia po zaznaczeniu */
+  }
+  
+  .label {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+  }
