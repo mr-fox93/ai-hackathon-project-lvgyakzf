@@ -180,3 +180,48 @@
 	flex-wrap: wrap;
 	overflow: auto;
 }
+
+.xIcon {
+	color: white;
+	font-size: 14px;
+	display: block;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 50%;
+	border: 1px solid white;
+  }
+  
+  .actions {
+	margin-top: 20px;
+  }
+  
+  .closeButton,
+  .clearButton {
+	background-color: #7f52ff;
+	border: none;
+	color: white;
+	padding: 10px;
+	margin-right: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+  }
+  
+  .closeButton:hover,
+  .clearButton:hover {
+	background-color: #5d3fd3;
+  }
+  
+  /* Add any other global styles you might have, like fonts, etc. */
+  
+  .speachToText {
+	background-color: #7f52ff;
+	color: white;
+	border: none;
+	border-radius: 25px;
+	padding: 10px 15px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+  }

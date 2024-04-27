@@ -14,6 +14,7 @@ import { useStore } from './store/useStore'
 import SpeechToText from './SpeechTotext'
 import { knownProducts } from './knownProducts'
 import Checkbox from './components/Checkbox/Checkbox'
+import Loader from './components/Loader/Loader'
 
 interface MealPlan {
 	id: number
@@ -102,14 +103,6 @@ const App: React.FC = () => {
 		fetchProducts()
 	}
 
-	const handleTranscription = (transcript: string) => {
-		setInputProduct(transcript)
-	}
-
-	const handleClear = () => {
-		setInputProduct('')
-	}
-
 	const togglePantry = () => {
 		setShowPantry(!showPantry)
 	}
@@ -119,6 +112,14 @@ const App: React.FC = () => {
 	}
 
 	// PROMPTY I STRZAŁ DO API
+	const handleTranscription = (transcript: string) => {
+		setQuickMealInput(transcript)
+	}
+
+	const handleClear = () => {
+		setQuickMealInput('')
+		setResponse('')
+	}
 
 	const promptQuciky = `Bazując na tych składnikach: ${quickMealInput}, podaj mi prosty i szybki przepis do zrobienia.`
 	// const granaryQuick = `Bazując na tych składnikach: ${inputProduct}, podaj mi prosty i szybki przepis do zrobienia.`;
@@ -176,7 +177,7 @@ const App: React.FC = () => {
 
 	return (
 		<div className={styles.container}>
-			{loading && <p>Loading...</p>}
+			{loading && <Loader />}
 			{response && !showMealPlan && !showMealPlan && (
 				<div className={styles.responseWrapper}>
 					<p className={styles.response}>{response}</p>
