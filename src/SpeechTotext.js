@@ -11,8 +11,8 @@ const SpeechToText = ({ onTranscript, onClear }) => {
   recognition.interimResults = true;
   recognition.lang = "pl-PL";
 
-  recognition.onresult = (event: SpeechRecognitionEvent) => {
-    let newTranscript: string = "";
+  recognition.onresult = (event) => {
+    let newTranscript = "";
     for (let i = event.resultIndex; i < event.results.length; ++i) {
       const result = event.results[i];
       const transcriptFragment = result[0].transcript;
@@ -52,7 +52,6 @@ const SpeechToText = ({ onTranscript, onClear }) => {
 
   return (
     <div>
-      <p>{transcript}</p>
       <button onMouseDown={startListening} onMouseUp={stopListening}>
         Press & speak
       </button>

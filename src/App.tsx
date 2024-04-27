@@ -115,11 +115,11 @@ const App: React.FC = () => {
   };
 
   const handleTranscription = (transcript: string) => {
-    setInputProduct(transcript);
+    setQuickMealInput(transcript);
   };
 
   const handleClear = () => {
-    setInputProduct("");
+    setQuickMealInput("");
   };
 
   const togglePantry = () => {
