@@ -8,15 +8,26 @@ const SpeechToText = ({ onTranscript, onClear }) => {
     window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new speechRecognition();
 
-  recognition.continuous = false;
+  recognition.continuous = true;
   recognition.interimResults = true;
   recognition.lang = "pl-PL";
 
   recognition.onresult = (event) => {
-    const current = event.resultIndex;
-    const transcript = event.results[current][0].transcript;
-    onTranscript(transcript);
+    let newTranscript = "";
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      const result = event.results[i];
+      const transcriptFragment = result[0].transcript;
+      if (result.isFinal) {
+        newTranscript += transcriptFragment + " ";
+      }
+    }
+    setTranscript(prevTranscript => {
+      const updatedTranscript = prevTranscript + newTranscript;
+      onTranscript(updatedTranscript); // Przekazujemy zaktualizowany cały transkrypt
+      return updatedTranscript; // Zwracamy zaktualizowany cały transkrypt
+    });
   };
+  
 
   const startListening = () => {
     recognition.start();
@@ -35,19 +46,6 @@ const SpeechToText = ({ onTranscript, onClear }) => {
     onClear();
   };
 
-  recognition.onresult = (event) => {
-    let newTranscript = "";
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      const result = event.results[i];
-      const transcriptFragment = result[0].transcript;
-      if (result.isFinal) {
-        newTranscript += transcriptFragment + " ";
-      }
-    }
-    setTranscript((prevTranscript) => prevTranscript + newTranscript);
-    onTranscript(transcript + newTranscript);
-  };
-
   useEffect(() => {
     listening ? startListening() : stopListening();
     return stopListening;
@@ -55,7 +53,6 @@ const SpeechToText = ({ onTranscript, onClear }) => {
 
   return (
     <div>
-      <p>{transcript}</p>
       <button
         className={styles.speachToText}
         onMouseDown={startListening}
