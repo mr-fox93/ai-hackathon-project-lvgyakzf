@@ -1,0 +1,104 @@
+.chip {
+	display: inline-block;
+	padding: 8px;
+	border-radius: 25px;
+	background-color: #e0e0e0;
+	margin: 5px;
+
+	transition: background-color 0.3s;
+}
+.chip:hover {
+	background-color: #aeaeae;
+}
+
+.chip > div {
+	cursor: pointer;
+	background-color: red;
+}
+
+.textarea {
+	margin-top: 10px;
+	width: 100%;
+
+	padding: 5px;
+	height: 100px;
+}
+
+.buttonAdd {
+	width: 250px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.mag {
+	width: 80px;
+	height: 50px;
+	position: absolute;
+	right: 5px;
+	bottom: 200px;
+}
+
+.container {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 10px;
+	position: relative;
+}
+
+.buttonsWrapper {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+	button {
+		height: 50px;
+		padding: 0 1rem;
+		margin-top: 10px;
+	}
+}
+
+.popupWrapper {
+	background-color: #f8f8f8;
+	padding: 10px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.popupButtons {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	button {
+		width: 150px;
+		height: 30px;
+	}
+}
+
+.popupTextarea {
+	height: 100px;
+	width: 100%;
+}
+
+.mainWrapper {
+	width: 100%;
+}
+
+.actionsWrapper {
+	position: absolute;
+	bottom: 300px;
+	right: 5px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	button {
+		height: 40px;
+	}
+}
