@@ -15,8 +15,6 @@ interface StoreProps {
 	setInputProduct: (inputProduct: string) => void
 	products: Product[]
 	setProducts: (products: Product[] | ((prevProducts: Product[]) => Product[])) => void
-	showQuickMealPanel: boolean
-	setShowQuickMealPanel: (showQuickMealPanel: boolean) => void
 	quickMealInput: string
 	setQuickMealInput: (quickMealInput: string) => void
 	results: Result[]
@@ -35,8 +33,6 @@ export const useStore = create<StoreProps>(set => ({
 		set(state => ({
 			products: typeof products === 'function' ? products(state.products) : products,
 		})),
-	showQuickMealPanel: false,
-	setShowQuickMealPanel: (showQuickMealPanel: boolean) => set({ showQuickMealPanel }),
 	quickMealInput: '',
 	setQuickMealInput: (quickMealInput: string) => set({ quickMealInput }),
 	results: [],

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { fetchChatCompletion, createPromptForOpenAI } from './apiService'
+import React, { useEffect, useState } from 'react'
+import { fetchChatCompletion } from './apiService'
 import styles from './app.module.css'
 import { addProduct, getProducts, removeProduct, deleteDatabase } from './database'
 import { useStore } from './store/useStore'
@@ -8,13 +8,14 @@ import { knownProducts } from './knownProducts'
 
 const App: React.FC = () => {
 
+  const [loading, setLoading] = useState(false);
+	const [response, setResponse] = useState('');
+
 	const {
 		inputProduct,
 		setInputProduct,
 		products,
 		setProducts,
-		showQuickMealPanel,
-		setShowQuickMealPanel,
 		quickMealInput,
 		setQuickMealInput,
 		setResult,
@@ -25,7 +26,7 @@ const App: React.FC = () => {
 		setShowPantry,
 	} = useStore()
 
-  const normalizeText = (text: string) =>
+	const normalizeText = (text: string) =>
 		text
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
@@ -45,7 +46,7 @@ const App: React.FC = () => {
 		setProducts(items)
 	}
 
-const handleAddProduct = async () => {
+	const handleAddProduct = async () => {
 		let inputLower = normalizeText(inputProduct)
 		const productsToAdd = []
 
@@ -74,22 +75,9 @@ const handleAddProduct = async () => {
 		setInputProduct('')
 	}
 
-
 	const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
 		await removeProduct(id)
 		fetchProducts()
-	}
-
-	const toggleQuickMealPanel = () => {
-		setShowQuickMealPanel(!showQuickMealPanel)
-		setQuickMealInput(inputProduct)
-	}
-	const togglePantry = () => {
-		setShowPantry(!showPantry)
-	}
-
-	const toggleMealPlan = () => {
-		setShowMealPlan(!showMealPlan)
 	}
 
 	const handleTranscription = (transcript: string) => {
@@ -100,14 +88,7 @@ const handleAddProduct = async () => {
 		setInputProduct('')
 	}
 
-	const handleGenerateMeal = async () => {
-		const prompt = createPromptForOpenAI(quickMealInput)
-		const response = await fetchChatCompletion(prompt)
-		console.log(response) //Tutaj możesz przetworzyć odpowiedź, np. wyświetlić ją użytkownikowi
-		setResult(response)
-	}
-
-  const togglePantry = () => {
+	const togglePantry = () => {
 		setShowPantry(!showPantry)
 	}
 
@@ -115,66 +96,69 @@ const handleAddProduct = async () => {
 		setShowMealPlan(!showMealPlan)
 	}
 
+	// PROMPTY I STRZAŁ DO API
+
+	const promptQuciky = `Bazując na tych składnikach: ${quickMealInput}, podaj mi prosty i szybki przepis do zrobienia.`
+
+  const handleGenerateMeal = async () => {
+		setLoading(true);
+		await fetchChatCompletion(
+			promptQuciky,
+			(response: React.SetStateAction<string>) => {
+				setResponse(response);
+				setLoading(false);
+			},
+			setLoading
+		);
+	}
 
 	return (
-    <div className={styles.container}>
-    {!showPantry && !showMealPlan && !showQuickMealPanel && (
-      <div className={styles.actionsWrapper}>
-        <button onClick={togglePantry}>SPICHLERZ</button>
-        <button onClick={toggleMealPlan}>JADŁOSPISY</button>
-      </div>
-    )}
+		<div className={styles.container}>
+      {loading && <p>Loading...</p>}
+			{response && <p>{response}</p>}
+			{!showPantry && !showMealPlan && (
+				<div className={styles.actionsWrapper}>
+					<button onClick={togglePantry}>SPICHLERZ</button>
+					<button onClick={toggleMealPlan}>JADŁOSPISY</button>
+				</div>
+			)}
 
-    {!showPantry && !showMealPlan && !showQuickMealPanel && (
-      <div className={styles.mainWrapper}>
-  <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
-        <textarea
-          className={styles.textarea}
-          value={inputProduct}
-          onChange={e => setInputProduct(e.target.value)}
-          placeholder='Enter products...'
-        />
-        <div className={styles.buttonsWrapper}>
-          <button onClick={handleAddProduct}>DODAJ DO SPICHLERZA</button>
-          <button onClick={toggleQuickMealPanel}>SZYBKIE JEDZONKO</button>
-        </div>
-      </div>
-    )}
+			{!showPantry && !showMealPlan && (
+				<div className={styles.mainWrapper}>
+					<SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
+					<textarea
+						className={styles.textarea}
+						value={quickMealInput}
+						onChange={e => setQuickMealInput(e.target.value)}
+						placeholder='Enter products...'
+					/>
+					<div className={styles.buttonsWrapper}>
+						<button onClick={handleAddProduct}>DODAJ DO SPICHLERZA</button>
+						<button onClick={handleGenerateMeal}>SZYBKIE JEDZONKO</button>
+					</div>
+				</div>
+			)}
 
-    {showQuickMealPanel && (
-      <div className={styles.popupWrapper}>
-        <textarea
-          className={styles.popupTextarea}
-          value={quickMealInput}
-          onChange={e => setQuickMealInput(e.target.value)}
-        />
-        <div className={styles.popupButtons}>
-          <button onClick={() => setShowQuickMealPanel(false)}>ZAMKNIJ</button>
-          <button onClick={handleGenerateMeal}>GENERUJ POSIŁEK</button>
-        </div>
-      </div>
-    )}
+			{showPantry && (
+				<div className={styles.pantryContainer}>
+					<ul>
+						{products.map(product => (
+							<li key={product.id}>
+								{product.name}
+								<button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+							</li>
+						))}
+					</ul>
+					<button onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
+				</div>
+			)}
 
-    {showPantry && (
-      <div className={styles.pantryContainer}>
-        <ul>
-          {products.map(product => (
-            <li key={product.id}>
-              {product.name}
-              <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-        <button onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
-      </div>
-    )}
-
-    {showMealPlan && (
-      <div className={styles.mealPlanContainer}>
-        <button onClick={toggleMealPlan}>ZAMKNIJ JADŁOSPISY</button>
-      </div>
-    )}
-  </div>
+			{showMealPlan && (
+				<div className={styles.mealPlanContainer}>
+					<button onClick={toggleMealPlan}>ZAMKNIJ JADŁOSPISY</button>
+				</div>
+			)}
+		</div>
 
 	)
 }
