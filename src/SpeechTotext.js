@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Button from "./components/Button/Button";
 
 const SpeechToText = ({ onTranscript, onClear }) => {
   const [transcript, setTranscript] = useState("");
@@ -54,16 +53,12 @@ const SpeechToText = ({ onTranscript, onClear }) => {
   }, [listening]);
 
   return (
-    <div class="voicebox">
+    <div>
       <p>{transcript}</p>
-      <Button
-        variant="long"
-        onMouseDown={startListening}
-        onMouseUp={stopListening}
-      >
+      <button onMouseDown={startListening} onMouseUp={stopListening}>
         Press & speak
-      </Button>
-      <Button onClick={clearTranscript}>Clear</Button>
+      </button>
+      <button onClick={clearTranscript}>Clear</button>
     </div>
   );
 };

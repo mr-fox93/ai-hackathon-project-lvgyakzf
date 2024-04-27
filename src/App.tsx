@@ -69,8 +69,11 @@ const App: React.FC = () => {
 	const [quickMealInput, setQuickMealInput] = useState('')
 	const [showPantry, setShowPantry] = useState(false)
 	const [showMealPlan, setShowMealPlan] = useState(false)
-  const normalizeText = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  
+	const normalizeText = (text: string) =>
+		text
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.toLowerCase()
 	useEffect(() => {
 		fetchProducts()
 	}, [])
@@ -79,32 +82,34 @@ const App: React.FC = () => {
 		setProducts(items)
 	}
 
-  const handleAddProduct = async () => {
-    let inputLower = normalizeText(inputProduct);
-    const productsToAdd = [];
+	const handleAddProduct = async () => {
+		let inputLower = normalizeText(inputProduct)
+		const productsToAdd = []
 
-    // Check for known products and add them separately
-    for (const product of knownProducts) {
-      const normalizedProduct = normalizeText(product);
-      if (inputLower.includes(normalizedProduct)) {
-        productsToAdd.push(product); // Add the original name, not normalized
-        inputLower = inputLower.replace(new RegExp(normalizedProduct, 'g'), '');
-      }
-    }
+		// Check for known products and add them separately
+		for (const product of knownProducts) {
+			const normalizedProduct = normalizeText(product)
+			if (inputLower.includes(normalizedProduct)) {
+				productsToAdd.push(product) // Add the original name, not normalized
+				inputLower = inputLower.replace(new RegExp(normalizedProduct, 'g'), '')
+			}
+		}
 
-    inputLower.split(' ').forEach(word => {
-      if (word.trim() !== '') productsToAdd.push(word);
-    });
+		// Add remaining single word products
+		inputLower.split(' ').forEach(word => {
+			if (word.trim() !== '') productsToAdd.push(word)
+		})
 
-    for (const product of productsToAdd) {
-      const newProduct = await addProduct({ name: product });
-      if (newProduct.id) {
-        setProducts(prev => [...prev, newProduct]);
-      }
-    }
+		// Add each product to the database and state
+		for (const product of productsToAdd) {
+			const newProduct = await addProduct({ name: product })
+			if (newProduct.id) {
+				setProducts(prev => [...prev, newProduct])
+			}
+		}
 
-    setInputProduct('');
-  };
+		setInputProduct('')
+	}
 
 	const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
 		await removeProduct(id)
