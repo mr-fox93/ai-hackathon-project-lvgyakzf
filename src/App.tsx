@@ -17,9 +17,13 @@ const App: React.FC = () => {
     console.log(result);
   };
 
+  const handleClear = () => {
+    setInput("");
+  };
+
   return (
     <div>
-      <SpeechToText onTranscript={handleTranscription} />
+  <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
       <input
         type="text"
         value={input}
