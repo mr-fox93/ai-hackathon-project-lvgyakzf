@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { fetchChatCompletion, createPromptForOpenAI } from "./apiService";
+import { fetchChatCompletion } from "./apiService";
 import styles from "./app.module.css";
+import SpeechToText from "./SpeechTotext";
 import { addProduct, getProducts, removeProduct } from "./database";
 import { useStore } from "./store/useStore";
-import SpeechToText from "./SpeechTotext";
 
 const App: React.FC = () => {
   const {
@@ -15,7 +15,7 @@ const App: React.FC = () => {
     setShowQuickMealPanel,
     quickMealInput,
     setQuickMealInput,
-  } = useStore();
+  } = useStore(); // Użycie stanów z zustand
 
   useEffect(() => {
     fetchProducts();
@@ -52,12 +52,6 @@ const App: React.FC = () => {
 
   const handleClear = () => {
     setInputProduct("");
-  };
-
-  const handleGenerateMeal = async () => {
-    const prompt = createPromptForOpenAI(quickMealInput);
-    const response = await fetchChatCompletion(prompt);
-    console.log(response); // Tutaj możesz przetworzyć odpowiedź, np. wyświetlić ją użytkownikowi
   };
 
   return (
@@ -98,7 +92,11 @@ const App: React.FC = () => {
             <button onClick={() => setShowQuickMealPanel(false)}>
               ZAMKNIJ
             </button>
-            <button onClick={handleGenerateMeal}>GENERUJ POSIŁEK</button>
+            <button
+              onClick={() => console.log(`Generating meal...${quickMealInput}`)}
+            >
+              GENERUJ POSIŁEK
+            </button>
           </div>
         </div>
       )}
