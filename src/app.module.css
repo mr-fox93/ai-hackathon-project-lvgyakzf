@@ -57,6 +57,7 @@
 	gap: 15px;
 	justify-content: center;
 	button {
+		width: 100%;
 		height: 50px;
 		padding: 0 1rem;
 		margin-top: 10px;
@@ -104,11 +105,78 @@
 }
 
 .pantryContainer {
-    height: 300px;
-    background-color: red;
+	height: 100%;
+	width: 100%;
+	background-color: red;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 }
 
+.pantryBtn {
+	width: 100%;
+	height: 30px;
+	margin-top: 20px;
+}
 .mealPlanContainer {
-    height: 300px;
-    background-color: blue;
+	height: 100%;
+	width: 100%;
+	background-color: blue;
+	display: flex;
+	flex-direction: column-reverse;
+	flex-wrap: wrap;
+	gap: 10px;
+	position: relative;
+
+}
+
+.addButton {
+	width: 100%;
+	height: 45px;
+}
+
+.pantryList {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	li {
+		background-color: tomato;
+		border: 1px solid blue;
+	}
+}
+
+.pantryBtnWrapper {
+	display: flex;
+}
+
+.response {
+
+}
+
+.responseWrapper {
+	border: 1px solid tomato;
+	border-radius: 10px;
+	padding: 1rem;
+	width: 80%;
+	margin-left: -70px;
+}
+
+.mealWrapper {
+	width: 50%;
+	height: 200px;
+	overflow: auto;
+	background-color: green;
+}
+
+.closeMealsBtn {
+	height: 35px;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.flexWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	overflow: auto;
 }
