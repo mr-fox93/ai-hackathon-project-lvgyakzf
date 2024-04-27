@@ -13,6 +13,7 @@ import {
 import { useStore } from "./store/useStore";
 import SpeechToText from "./SpeechTotext";
 import { knownProducts } from "./knownProducts";
+import Loader from "./components/Loader/Loader"
 
 interface MealPlan {
   id: number;
@@ -189,7 +190,7 @@ const handleDeleteMealPlan = async (id: IDBValidKey | IDBKeyRange) => {
 
   return (
     <div className={styles.container}>
-      {loading && <p>Loading...</p>}
+      {loading && <Loader />}
       {response && (
         <>
           <p>{response}</p>
