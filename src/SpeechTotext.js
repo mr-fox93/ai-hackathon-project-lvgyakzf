@@ -53,7 +53,6 @@ const SpeechToText = ({ onTranscript, onClear }) => {
 
   return (
     <div>
-      <p>{transcript}</p>
       <button
         className={styles.speachToText}
         onMouseDown={startListening}

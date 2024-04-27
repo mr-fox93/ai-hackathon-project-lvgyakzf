@@ -111,6 +111,7 @@ const App: React.FC = () => {
 
   const handleClear = () => {
     setQuickMealInput("");
+    setResponse("");
   };
 
   const togglePantry = () => {
