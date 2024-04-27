@@ -1,0 +1,18 @@
+.chip {
+	display: inline-block;
+	padding: 8px;
+	border-radius: 25px;
+	background-color: #e0e0e0;
+	margin: 5px;
+
+	transition: background-color 0.3s;
+   
+}
+.chip:hover {
+	background-color: #aeaeae;
+}
+
+.chip > div {
+    cursor: pointer;
+    background-color: red;
+}
