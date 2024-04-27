@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styles from "./app.module.css";
 
 const SpeechToText = ({ onTranscript, onClear }) => {
   const [transcript, setTranscript] = useState("");
@@ -52,10 +53,17 @@ const SpeechToText = ({ onTranscript, onClear }) => {
 
   return (
     <div>
-      <button onMouseDown={startListening} onMouseUp={stopListening}>
+      <p>{transcript}</p>
+      <button
+        className={styles.speachToText}
+        onMouseDown={startListening}
+        onMouseUp={stopListening}
+      >
         Press & speak
       </button>
-      <button onClick={clearTranscript}>Clear</button>
+      <button className={styles.speachToText} onClick={clearTranscript}>
+        Clear
+      </button>
     </div>
   );
 };

@@ -1,114 +1,177 @@
-.chip {
-	display: inline-block;
-	padding: 8px;
-	border-radius: 25px;
-	background-color: #e0e0e0;
-	margin: 5px;
-
-	transition: background-color 0.3s;
-}
-.chip:hover {
-	background-color: #aeaeae;
-}
-
-.chip > div {
-	cursor: pointer;
-	background-color: red;
-}
-
-.textarea {
-	margin-top: 10px;
-	width: 100%;
-
-	padding: 5px;
-	height: 100px;
-}
-
-.buttonAdd {
-	width: 250px;
-	height: 50px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 10px;
-}
-
-.mag {
-	width: 80px;
-	height: 50px;
-	position: absolute;
-	right: 5px;
-	bottom: 200px;
-}
-
 .container {
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	align-items: center;
-	padding: 10px;
-	position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5fc; /* Soft background for the whole page */
+  position: relative;
 }
 
-.buttonsWrapper {
-	display: flex;
-	gap: 15px;
-	justify-content: center;
-	button {
-		height: 50px;
-		padding: 0 1rem;
-		margin-top: 10px;
-	}
-}
-
-.popupWrapper {
-	background-color: #f8f8f8;
-	padding: 10px;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
-
+.actionsWrapper,
+.buttonsWrapper,
 .popupButtons {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	button {
-		width: 150px;
-		height: 30px;
-	}
+  display: flex;
+  gap: 15px;
+  justify-content: center;
 }
 
+.actionsWrapper button,
+.buttonsWrapper button,
+.popupButtons button,
+.mealPlanContainer button,
+.closeButton,
+.clearButton {
+  background-color: #7f52ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.actionsWrapper button:hover,
+.buttonsWrapper button:hover,
+.popupButtons button:hover,
+.mealPlanContainer button:hover,
+.closeButton:hover,
+.clearButton:hover {
+  background-color: #5d3fd3;
+}
+
+.textarea,
 .popupTextarea {
-	height: 100px;
-	width: 100%;
-}
-
-.mainWrapper {
-	width: 100%;
-}
-
-.actionsWrapper {
-	position: absolute;
-	bottom: 400px;
-	right: 5px;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	button {
-		height: 40px;
-	}
-}
-
-.pantryContainer {
-    height: 300px;
-    background-color: red;
+  width: calc(100% - 20px); /* Full width minus padding */
+  height: 100px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  border: 1px solid #cccccc; /* Light border */
 }
 
 .mealPlanContainer {
-    height: 300px;
-    background-color: blue;
+  width: 100%; /* Full width of the parent */
+  padding: 20px;
+  background-color: #d8b8f5; /* Matching the pantryContainer */
+  border-radius: 15px;
+}
+
+.actionsWrapper {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Adjusted the pantryContainer and productList to match the design */
+.pantryContainer,
+.productList,
+.productTag,
+.deleteButton,
+.xIcon,
+.actions,
+.closeButton,
+.clearButton {
+  /* Styles from the previous snippet should remain here */
+}
+
+.mainWrapper {
+  width: 100%; /* Full width of the parent */
+}
+
+.popupWrapper {
+  background-color: #f8f8f8;
+  padding: 10px;
+  width: calc(100% - 20px); /* Full width minus padding */
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Add any other global styles you might have, like fonts, etc. */
+
+/* Optional: Add animations or effects for button clicks and other interactive elements */
+
+.pantryContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #d8b8f5;
+  padding: 20px;
+}
+
+.productList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.productTag {
+  display: flex;
+  align-items: center;
+  background-color: #5d3fd3;
+  color: white;
+  border-radius: 15px;
+  padding: 5px 10px;
+  gap: 10px;
+}
+
+.deleteButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xIcon {
+  color: white;
+  font-size: 14px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.closeButton,
+.clearButton {
+  background-color: #7f52ff;
+  border: none;
+  color: white;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.closeButton:hover,
+.clearButton:hover {
+  background-color: #5d3fd3;
+}
+
+/* Add any other global styles you might have, like fonts, etc. */
+
+.speachToText {
+  background-color: #7f52ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
