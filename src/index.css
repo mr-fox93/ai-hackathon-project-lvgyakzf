@@ -1,13 +1,92 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
+/* --background-main-color: #fefaf0;
+--font-main-color: #10162f;
+--color-beige: #fff0e5;
+--color-white: #ffffff;
+--color-pink: #ec4899;
+--color-indigo: #6366f1;
+--color-yellow: #f59e0b; */
+
+html {
+  max-width: 520px;
+  margin: 0 auto;
+  background: #0d1117;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  max-width: 100%;
+  color: #10162f;
+  background-color: #fff0e5;
+  font-family: "Manrope", sans-serif;
+  height: 100vh;
+  height: 100dvh;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Manrope", sans-serif;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.textbox {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.textbox input {
+  padding: 0 1rem;
+  border: 1px solid #10162f;
+  width: 100%;
+  outline: none;
+}
+
+.textbox input::placeholder {
+  color: #10162f;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.voicebox {
+  display: flex;
+  width: 100%;
+}
+
+.message {
+  padding: 0.5rem 0;
 }
