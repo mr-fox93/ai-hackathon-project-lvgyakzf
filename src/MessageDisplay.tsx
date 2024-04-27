@@ -21,7 +21,7 @@ function MessageDisplay() {
   // Funkcja do renderowania listy treści wiadomości
   const renderMessages = () => {
     return contents.map((message) => (
-      <div key={message.id}>
+      <div className="message" key={message.id}>
         <strong>Message ID {message.id}:</strong> {message.content}
       </div>
     ));
