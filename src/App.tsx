@@ -219,19 +219,30 @@ const App: React.FC = () => {
       )}
 
       {showPantry && (
-        <div className={styles.pantryContainer}>
-          <ul>
-            {products.map((product) => (
-              <li key={product.id}>
-                {product.name}
-                <button onClick={() => handleDeleteProduct(product.id)}>
-                  Delete
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
-          <button onClick={deleteDatabase}>CLEAR ALL</button>
+        <div>
+          <div className={styles.pantryContainer}>
+            <div className={styles.productList}>
+              {products.map((product) => (
+                <div className={styles.productTag} key={product.id}>
+                  {product.name}
+                  <button
+                    className={styles.deleteButton}
+                    onClick={() => handleDeleteProduct(product.id)}
+                  >
+                    <span className={styles.xIcon}>&times;</span>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className={styles.actions}>
+            <button className={styles.closeButton} onClick={togglePantry}>
+              ZAMKNIJ SPICHLERZ
+            </button>
+            <button className={styles.clearButton} onClick={deleteDatabase}>
+              CLEAR ALL
+            </button>
+          </div>
         </div>
       )}
 
