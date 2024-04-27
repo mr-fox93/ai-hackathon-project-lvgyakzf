@@ -1,0 +1,22 @@
+.button {
+  outline: none;
+  transition: transform 0.1s, box-shadow 0.1s;
+  background-color: white;
+  color: #10162f;
+  font-size: 1.2rem;
+  border: 1px solid #10162f;
+}
+
+.primary {
+  padding: 0.5rem 1rem;
+}
+
+.button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+.long {
+  width: 100%;
+  margin-right: 0.5rem;
+}

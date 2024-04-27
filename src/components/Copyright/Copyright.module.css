@@ -1,0 +1,11 @@
+.copy {
+  font-size: 0.9rem;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.copy p {
+  text-align: center;
+  padding: 8px 0;
+}
