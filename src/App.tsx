@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { fetchChatCompletion } from "./apiService";
 import { saveAs } from "file-saver";
 import SpeechToText from "./SpeechTotext";
-import { saveResponse } from "./services/supabaseService";
+import { deleteAllResponses, saveResponse } from "./services/supabaseService";
 import MessageDisplay from "./MessageDisplay";
 
 const App: React.FC = () => {
@@ -27,6 +27,9 @@ const App: React.FC = () => {
 
   return (
     <div>
+      <button onClick={() => deleteAllResponses().catch(console.error)}>
+        Delete
+      </button>
       <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
       <input
         type="text"

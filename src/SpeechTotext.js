@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 const SpeechToText = ({ onTranscript, onClear }) => {
   const [transcript, setTranscript] = useState("");
   const [listening, setListening] = useState(false);
-  const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const speechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new speechRecognition();
 
   recognition.continuous = false;
@@ -30,16 +31,16 @@ const SpeechToText = ({ onTranscript, onClear }) => {
       recognition.stop();
       setListening(false);
     }
-    onClear(); 
+    onClear();
   };
 
   recognition.onresult = (event) => {
-    let newTranscript = '';
+    let newTranscript = "";
     for (let i = event.resultIndex; i < event.results.length; ++i) {
       const result = event.results[i];
       const transcriptFragment = result[0].transcript;
       if (result.isFinal) {
-        newTranscript += transcriptFragment + ' '; 
+        newTranscript += transcriptFragment + " ";
       }
     }
     setTranscript((prevTranscript) => prevTranscript + newTranscript);
@@ -52,14 +53,12 @@ const SpeechToText = ({ onTranscript, onClear }) => {
   }, [listening]);
 
   return (
-    <div>  
-        <p>{transcript}</p>
-        <button onMouseDown={startListening} onMouseUp={stopListening}>
+    <div>
+      <p>{transcript}</p>
+      <button onMouseDown={startListening} onMouseUp={stopListening}>
         Press & speak
       </button>
-       <button onClick={clearTranscript}>Clear</button>
-
-    
+      <button onClick={clearTranscript}>Clear</button>
     </div>
   );
 };

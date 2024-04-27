@@ -31,3 +31,17 @@ export const fetchMessageContents = async () => {
     };
   });
 };
+
+export const deleteAllResponses = async () => {
+  try {
+    let { data, error } = await supabase.from("chat_responses").delete();
+
+    if (error) throw error;
+
+    console.log("All responses deleted successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error deleting data:", error);
+    alert("Failed to delete responses: " + error.message);
+  }
+};
