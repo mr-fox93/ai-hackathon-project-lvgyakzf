@@ -3,6 +3,7 @@ import { fetchChatCompletion } from "./apiService";
 import { saveAs } from "file-saver";
 import SpeechToText from "./SpeechTotext";
 import { saveResponse } from "./services/supabaseService";
+import MessageDisplay from "./MessageDisplay";
 
 const App: React.FC = () => {
   const [input, setInput] = useState("");
@@ -21,19 +22,20 @@ const App: React.FC = () => {
 
   const handleClear = () => {
     setInput("");
-    setResponse({}); 
+    setResponse({});
   };
 
   return (
     <div>
-  <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
+      <SpeechToText onTranscript={handleTranscription} onClear={handleClear} />
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       <button onClick={handleSubmit}>Send</button>
-      <pre>{JSON.stringify(response, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(response, null, 2)}</pre> */}
+      <MessageDisplay />
     </div>
   );
 };
