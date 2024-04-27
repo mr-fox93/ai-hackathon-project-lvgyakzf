@@ -21,6 +21,7 @@ const App: React.FC = () => {
 
   const handleClear = () => {
     setInput("");
+    setResponse({}); 
   };
 
   return (
