@@ -50,23 +50,6 @@ export async function removeProduct(id: IDBKeyRange | IDBValidKey) {
     await tx.done;
   }
 
-  //wypierdol baze
-  // Funkcja do usuwania całej bazy danych
-  export async function deleteDatabase(onSuccess: () => void) {
-    console.log("Starting to open DB");
-    const db = await openDB(DATABASE_NAME);
-    console.log("DB opened, now closing");
-    db.close();
-    console.log("DB closed, starting to delete");
-    const deleteDBRequest = indexedDB.deleteDatabase(DATABASE_NAME);
-    deleteDBRequest.onerror = function(event) {
-        console.error("Error deleting database.");
-    };
-    deleteDBRequest.onsuccess = function(event) {
-        console.log("Database deleted successfully");
-        onSuccess();
-    };
-}
 
   
   export async function addMealPlan(name: string, content: string) {
@@ -97,4 +80,22 @@ export async function removeMealPlan(id: IDBValidKey | IDBKeyRange) {
     await store.delete(id);
     await tx.done;
     console.log("Meal plan removed successfully");
+}
+
+export async function removeAllProducts() {
+  const db = await initDB();
+  const tx = db.transaction(STORE_NAME, 'readwrite');
+  const store = tx.objectStore(STORE_NAME);
+  await store.clear();
+  await tx.done;
+  console.log("All products have been removed");
+}
+
+export async function removeAllMealPlans() {
+  const db = await initDB();
+  const tx = db.transaction(MEAL_PLAN_STORE_NAME, 'readwrite');
+  const store = tx.objectStore(MEAL_PLAN_STORE_NAME);
+  await store.clear();
+  await tx.done;
+  console.log("All meal plans have been removed");
 }

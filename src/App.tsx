@@ -5,10 +5,11 @@ import {
 	addProduct,
 	getProducts,
 	removeProduct,
-	deleteDatabase,
 	getMealPlans,
 	addMealPlan,
 	removeMealPlan,
+	removeAllProducts,
+	removeAllMealPlans,
 } from './database'
 import { useStore } from './store/useStore'
 import SpeechToText from './SpeechTotext'
@@ -165,10 +166,15 @@ const App: React.FC = () => {
 		setShowMealPlanSingle(prev => (prev === id ? null : id))
 	}
 	const handleDeletePantry = async () => {
-		await deleteDatabase(() => {
-			setProducts([])
-			console.log('All data has been cleared from UI')
-		})
+		await removeAllProducts()
+		setProducts([])
+		await fetchProducts()
+	}
+
+	const handleDeleteAllMealPlans = async () => {
+		await removeAllMealPlans()
+		setMealPlans([])
+		await loadMealPlans()
 	}
 
 	// PROMPTY I FUNKCJE DO WALENIA W GPT!!!
@@ -319,10 +325,7 @@ const App: React.FC = () => {
 						onChange={e => handleUptadeTextArea(e.target.value)}
 						placeholder='Wpisz produkty...'
 					/>
-					<button
-						className={styles.addButton}
-						onClick={handleAddProduct}
-						disabled={quickMealInput.length < 1 || inputProduct.length < 1}>
+					<button className={styles.addButton} onClick={handleAddProduct} disabled={quickMealInput.trim() === ''}>
 						DODAJ DO SPICHLERZA
 					</button>
 					<div className={styles.buttonsWrapper}>
@@ -402,9 +405,14 @@ const App: React.FC = () => {
 
 			{showMealPlan && (
 				<div className={styles.mealPlanContainer}>
-					<button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
-						ZAMKNIJ JADŁOSPISY
-					</button>
+					<div>
+						<button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
+							ZAMKNIJ JADŁOSPISY
+						</button>
+						<button className={styles.closeMealsBtn} onClick={handleDeleteAllMealPlans}>
+							USUŃ WSZYSTKIE
+						</button>
+					</div>
 					<div className={styles.mealsWrapper}>
 						{mealPlans.map((plan, index) => (
 							<div className={styles.mealWrapper} key={index}>
