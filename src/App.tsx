@@ -19,34 +19,44 @@ import Header from "./components/Header/Header";
 import CloseIcon from "./assets/CloseIcon";
 
 interface MealPlan {
-  id: number;
-  content: string;
+
+	id: number
+	name: string // Add name field
+	content: string
 }
 
 const App: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState("");
-  const [mealPlans, setMealPlans] = useState([] as MealPlan[]);
-  const [showProductNames, setShowProductNames] = useState(false);
+	const [loading, setLoading] = useState(false)
+	const [response, setResponse] = useState('')
+	const [mealPlans, setMealPlans] = useState([] as MealPlan[])
+	const [showProductNames, setShowProductNames] = useState(false)
+	const [showAddFavorite, setShowAddFavorite] = useState(false)
+	const [favoriteName, setFavoriteName] = useState('')
+	const [showMealPlanSingle, setShowMealPlanSingle] = useState<number | null>(null)
+  const [searchTerm, setSearchTerm] = useState("");
+
 
   useEffect(() => {
     getMealPlans();
   }, []);
 
-  const {
-    inputProduct,
-    setInputProduct,
-    products,
-    setProducts,
-    quickMealInput,
-    setQuickMealInput,
-    setResult,
-    results,
-    showMealPlan,
-    setShowMealPlan,
-    showPantry,
-    setShowPantry,
-  } = useStore();
+
+	const {
+		inputProduct,
+		setInputProduct,
+		products,
+		setProducts,
+		quickMealInput,
+		setShowMealPlan,
+		showMealPlan,
+		setQuickMealInput,
+		setResult,
+		results,
+
+		showPantry,
+		setShowPantry,
+	} = useStore()
+
 
   const normalizeText = (text: string) =>
     text
@@ -113,36 +123,32 @@ const App: React.FC = () => {
     setShowMealPlan(!showMealPlan);
   };
 
-  // PROMPTY I STRZAŁ DO API
-  const handleTranscription = (transcript: string) => {
-    setQuickMealInput(transcript);
-  };
+
+	const handleTranscription = (transcript: string) => {
+		setQuickMealInput(transcript)
+	}
+
 
   const handleClear = () => {
     setQuickMealInput("");
     setResponse("");
   };
 
-  const promptQuciky = `Bazując na tych składnikach: ${quickMealInput}, podaj mi prosty i szybki przepis do zrobienia.`;
-  // const granaryQuick = `Bazując na tych składnikach: ${inputProduct}, podaj mi prosty i szybki przepis do zrobienia.`;
 
-  const handleGenerateMeal = async () => {
-    setLoading(true);
-    await fetchChatCompletion(
-      `Bazując na tych składnikach: ${
-        showProductNames
-          ? quickMealInput +
-            ", " +
-            products.map((product) => product.name).join(", ")
-          : quickMealInput
-      }, podaj mi prosty i szybki przepis do zrobienia.`,
-      (response: React.SetStateAction<string>) => {
-        setResponse(response);
-        setLoading(false);
-      },
-      setLoading
-    );
-  };
+	const handleGenerateMeal = async () => {
+		setLoading(true)
+		await fetchChatCompletion(
+			`Bazując na tych składnikach: ${
+				showProductNames ? quickMealInput + ', ' + products.map(product => product.name).join(', ') : quickMealInput
+			}, podaj mi prosty i szybki przepis do zrobienia.`,
+			(response: React.SetStateAction<string>) => {
+				setResponse(response)
+				setLoading(false)
+			},
+			setLoading
+		)
+	}
+
 
   const handleGenerateMealPlan = async () => {
     setLoading(true);
@@ -167,12 +173,16 @@ const App: React.FC = () => {
     setInputProduct(value);
   };
 
-  const handleAddToFavorites = async () => {
-    if (response) {
-      const newMealPlan = await addMealPlan(response);
-      setMealPlans((prev) => [...prev, newMealPlan]);
-    }
-  };
+
+	const handleSaveFavorite = async () => {
+		if (favoriteName && response) {
+			const newMealPlan = await addMealPlan(favoriteName, response)
+			setMealPlans(prev => [...prev, newMealPlan])
+			setFavoriteName('')
+			setShowAddFavorite(false)
+		}
+	}
+
 
   const loadMealPlans = async () => {
     const loadedMealPlans = await getMealPlans();
@@ -185,23 +195,53 @@ const App: React.FC = () => {
     loadMealPlans();
   };
 
-  return (
-    <main className="main">
-      <div className={styles.container}>
+
+
+	const handleToggleMealPlanDisplay = (id: number) => {
+		setShowMealPlanSingle(prev => prev === id ? null : id);
+	  };
+  const handleDeletePantry = async () => {
+    await deleteDatabase(() => {
+        setProducts([]);
+        console.log('All data has been cleared from UI');
+    });
+}
+
+	return (
+		<div className={styles.container}>
         <Header />
-        {loading && <Loader />}
-        {response && !showMealPlan && !showMealPlan && (
-          <div className={styles.responseWrapper}>
-            <p className={styles.response}>{response}</p>
-            <button onClick={handleAddToFavorites}>Add to Favorites</button>
-          </div>
-        )}
-        {!showPantry && !showMealPlan && (
-          <div className={styles.actionsWrapper}>
-            <button onClick={togglePantry}>SPICHLERZ</button>
-            <button onClick={toggleMealPlan}>JADŁOSPISY</button>
-          </div>
-        )}
+			{loading && <Loader />}
+			{response && !showMealPlan && (
+				<div className={styles.responseWrapper}>
+					<p className={styles.response}>{response}</p>
+					<button onClick={() => setShowAddFavorite(true)}>DODAJ DO ULUBIONYCH</button>
+					<button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
+				</div>
+			)}
+
+			{showAddFavorite && (
+				<div
+					style={{
+						position: 'fixed',
+						zIndex: 999,
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						backgroundColor: 'white',
+						padding: '20px',
+					}}>
+					<input value={favoriteName} onChange={e => setFavoriteName(e.target.value)} placeholder='Wymyśl nazwę' />
+					<button onClick={handleSaveFavorite}>Zapisz</button>
+				</div>
+			)}
+
+			{!showPantry && !showMealPlan && (
+				<div className={styles.actionsWrapper}>
+					<button onClick={togglePantry}>SPICHLERZ</button>
+					<button onClick={toggleMealPlan}>JADŁOSPISY</button>
+				</div>
+			)}
+
 
         {!showPantry && !showMealPlan && (
           <div className={styles.mainWrapper}>
@@ -233,49 +273,60 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {showPantry && (
-          <div className={styles.pantryContainer}>
-            <ul className={styles.pantryList}>
-              {products.map((product) => (
-                <li key={product.id}>
-                  {product.name}
-                  <button onClick={() => handleDeleteProduct(product.id)}>
-                    <CloseIcon />
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <div className={styles.pantryBtnWrapper}>
-              <button className={styles.pantryBtn} onClick={togglePantry}>
-                ZAMKNIJ SPICHLERZ
-              </button>
-              <button className={styles.pantryBtn} onClick={deleteDatabase}>
-                USUŃ WSZYSTKO
-              </button>
-            </div>
-          </div>
-        )}
 
-        {showMealPlan && (
-          <div className={styles.mealPlanContainer}>
-            <div className={styles.flexWrapper}>
-              {mealPlans.map((plan, index) => (
-                <div className={styles.mealWrapper} key={index}>
-                  <p>{plan.content}</p>
-                  <button onClick={() => handleDeleteMealPlan(plan.id)}>
-                    X
-                  </button>
-                </div>
-              ))}
-              <button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
-                ZAMKNIJ JADŁOSPISY
-              </button>
-            </div>
-          </div>
-        )}
+			{showPantry && (
+        <div className={styles.pantryContainer}>
+           <div className={styles.searchBox}>
+            <input
+                type="text"
+                placeholder="Szukaj produktu..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
+            />
+             {searchTerm && (
+        <button className={styles.clearButton} onClick={() => setSearchTerm("")}>
+            &times;
+        </button>
+    )}
+       </div>
+        <ul className={styles.pantryList}>
+        {products.filter(product => product.name.toLowerCase().startsWith(searchTerm.toLowerCase())).map(product => (
+            <li key={product.id}>
+                {product.name}
+                <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+            </li>
+        ))}
+        </ul>
+        <div className={styles.pantryBtnWrapper}>
+            <button className={styles.pantryBtn} onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
+            <button className={styles.pantryBtn} onClick={handleDeletePantry}>CLEAR ALL</button>
+        </div>
+    </div>
+          )}
+
+			{showMealPlan && (
+				<div className={styles.mealPlanContainer}>
+					<button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
+						ZAMKNIJ JADŁOSPISY
+					</button>
+					<div className={styles.flexWrapper}>
+					{mealPlans.map((plan, index) => (
+      <div className={styles.mealWrapper} key={index}>
+        <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>{plan.name}</h3>
+        {showMealPlanSingle === plan.id && <p>{plan.content}</p>}
+        <button onClick={(e) => {
+          e.stopPropagation();
+          handleDeleteMealPlan(plan.id);
+        }}>Delete</button>
       </div>
-    </main>
-  );
-};
+    ))}
+					</div>
+				</div>
+			)}
+		</div>
+	)
+}
+
 
 export default App;

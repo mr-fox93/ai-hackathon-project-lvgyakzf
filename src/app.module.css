@@ -225,6 +225,7 @@
 }
 
 .mealWrapper {
+
   width: 50%;
   height: 200px;
   overflow: auto;
@@ -232,7 +233,7 @@
   border: 1px solid var(--gray-color);
   border-radius: 10px;
   padding: 1rem;
-}
+
 
 .closeMealsBtn {
   width: 100%;

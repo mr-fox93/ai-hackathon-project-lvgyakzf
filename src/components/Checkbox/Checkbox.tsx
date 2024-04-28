@@ -9,13 +9,8 @@ interface CheckboxProps {
   disabled?: boolean;
 }
 
-const Checkbox = ({
-  id,
-  label,
-  checked = true,
-  onChange,
-  disabled,
-}: CheckboxProps) => {
+const Checkbox = ({ id, label, checked=true, onChange, disabled }: CheckboxProps) => {
+
   const [isChecked, setIsChecked] = useState(checked);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {

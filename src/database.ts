@@ -52,29 +52,32 @@ export async function removeProduct(id: IDBKeyRange | IDBValidKey) {
 
   //wypierdol baze
   // Funkcja do usuwania całej bazy danych
-export async function deleteDatabase() {
-    await openDB(DATABASE_NAME).then(db => {
-      db.close();
-      const deleteDBRequest = indexedDB.deleteDatabase(DATABASE_NAME);
-      deleteDBRequest.onerror = function(event) {
+  export async function deleteDatabase(onSuccess: () => void) {
+    console.log("Starting to open DB");
+    const db = await openDB(DATABASE_NAME);
+    console.log("DB opened, now closing");
+    db.close();
+    console.log("DB closed, starting to delete");
+    const deleteDBRequest = indexedDB.deleteDatabase(DATABASE_NAME);
+    deleteDBRequest.onerror = function(event) {
         console.error("Error deleting database.");
-      };
-      deleteDBRequest.onsuccess = function(event) {
+    };
+    deleteDBRequest.onsuccess = function(event) {
         console.log("Database deleted successfully");
-      };
-    });
-  }
+        onSuccess();
+    };
+}
+
   
-  export async function addMealPlan(mealPlanContent: string) {
+  export async function addMealPlan(name: string, content: string) {
     const db = await initDB();
     const tx = db.transaction(MEAL_PLAN_STORE_NAME, 'readwrite');
     const store = tx.objectStore(MEAL_PLAN_STORE_NAME);
-    const id = await store.add({ content: mealPlanContent });
+    const id = await store.add({ name, content });
     await tx.done;
     console.log("Added meal plan with ID:", id);
-    // Explicitly cast id to number
-    return { content: mealPlanContent, id: id as number };
-}
+    return { name, content, id: id as number };
+  }
 
 
 export async function getMealPlans() {
