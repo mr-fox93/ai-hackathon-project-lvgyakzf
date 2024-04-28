@@ -1,3 +1,8 @@
+# Original Repo: https://github.com/nerdbord/ai-hackathon-project-lvgyakzf
+# Live: https://nerdbord.github.io/ai-hackathon-project-lvgyakzf/  
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
