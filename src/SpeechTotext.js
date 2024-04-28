@@ -57,6 +57,14 @@ const SpeechToText = ({ onTranscript, onClear }) => {
         className={styles.speachToText}
         onMouseDown={startListening}
         onMouseUp={stopListening}
+        onTouchStart={(e) => {
+          e.preventDefault(); // Zapobiega domyślnej akcji, czyli zaznaczaniu tekstu
+          startListening();
+        }}
+        onTouchEnd={(e) => {
+          e.preventDefault(); // Zapobiega domyślnej akcji, czyli zaznaczaniu tekstu
+          stopListening();
+        }}
       >
         <MicIcon />
         <span>Naciśnij i mów</span>
