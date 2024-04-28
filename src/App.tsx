@@ -499,9 +499,8 @@ const App: React.FC = () => {
 										</button>
 										<button onClick={() => checkToDoAgain(plan.content)}>SPRAWDŹ</button>
 									</div>
-									{showMealPlanSingle === plan.id && (
+									{!modalResponse && showMealPlanSingle === plan.id && (
 										<div className={styles.content}>
-											sdsadsad{' '}
 											<div className={styles.content}>
 												{' '}
 												<button className={styles.closeContent} onClick={() => handleToggleMealPlanDisplay(plan.id)}>
@@ -509,7 +508,6 @@ const App: React.FC = () => {
 												</button>{' '}
 												{plan.content}
 											</div>
-											sadasd
 										</div>
 									)}
 								</div>
