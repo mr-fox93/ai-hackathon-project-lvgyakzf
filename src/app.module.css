@@ -386,8 +386,11 @@
 }
 
 .searchBox {
-	display: flex;
-	width: 100%;
+
+  display: flex;
+  width: 100%;
+  margin-bottom: 1rem;
+
 
 	input {
 		width: 100%;
@@ -474,8 +477,25 @@ width: 100%;
 padding: 0 5px;
 }
 
-.addToFavorite button {
+
+.favInput {
+  padding: 1rem;
+  width: 300px;
+  border-radius: 10px;
   border: none;
-  height: 50px;
-  padding: 0 2px;
-  }
+  outline: none;
+  color: var(--dark-color);
+  font-weight: bold;
+}
+
+.favButton {
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid white;
+  background-color: var(--dark-color);
+  color: inherit;
+  color: white;
+  font-weight: bold;
+}
+
+

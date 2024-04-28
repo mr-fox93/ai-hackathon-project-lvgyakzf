@@ -5,23 +5,27 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import {
-	addProduct,
-	getProducts,
-	removeProduct,
-	deleteDatabase,
-	getMealPlans,
-	addMealPlan,
-	removeMealPlan,
-} from './database'
-import { useStore } from './store/useStore'
-import SpeechToText from './SpeechTotext'
-import { knownProducts } from './knownProducts'
-import Checkbox from './components/Checkbox/Checkbox'
-import Loader from './components/Loader/Loader'
-import Header from './components/Header/Header'
-import CloseIcon from './assets/CloseIcon'
-import LeftArrow from './assets/LeftArrow'
-import Modal from './components/Modal/Modal'
+
+  addProduct,
+  getProducts,
+  removeProduct,
+  deleteDatabase,
+  getMealPlans,
+  addMealPlan,
+  removeMealPlan,
+} from "./database";
+import { useStore } from "./store/useStore";
+import SpeechToText from "./SpeechTotext";
+import { knownProducts } from "./knownProducts";
+import Checkbox from "./components/Checkbox/Checkbox";
+import Loader from "./components/Loader/Loader";
+import Header from "./components/Header/Header";
+import CloseIcon from "./assets/CloseIcon";
+import LeftArrow from "./assets/LeftArrow";
+import Modal from "./components/Modal/Modal";
+import TrashIcon from "./assets/TrashIcon";
+import Copyright from "./components/Copyright/Copyright";
+
 
 interface MealPlan {
 	id: number
@@ -351,16 +355,23 @@ const App: React.FC = () => {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            padding: "20px",
+            backgroundColor: "#0a2533",
+            padding: "2rem",
+            borderRadius: "10px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "1rem",
           }}
         >
           <input
             value={favoriteName}
             onChange={(e) => setFavoriteName(e.target.value)}
-            placeholder="Wymyśl nazwę"
+            placeholder="Nazwij swój jadłospis..."
+            className={styles.favInput}
           />
-          <button onClick={handleSaveFavorite}>ZAPISZ</button>
+          <button className={styles.favButton} onClick={handleSaveFavorite}>
+            ZAPISZ
+          </button>
         </div>
       )}
 
@@ -443,36 +454,41 @@ const App: React.FC = () => {
 
       {showPantry && (
         <div className={styles.pantryContainer}>
-          <div className={styles.searchBox}>
-            <input
-              type="text"
-              placeholder="Szukaj produktu..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {searchTerm && (
-              <button
-                className={styles.clearButton}
-                onClick={() => setSearchTerm("")}
-              >
-                &times;
-              </button>
-            )}
+          <div className={styles.pantryBox}>
+            <div className={styles.searchBox}>
+              <input
+                type="text"
+                placeholder="Szukaj produktu..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button
+                  className={styles.clearButton}
+                  onClick={() => setSearchTerm("")}
+                >
+                  &times;
+                </button>
+              )}
+            </div>
+            <ul className={styles.pantryList}>
+              {products
+                .filter((product) =>
+                  product.name
+                    .toLowerCase()
+                    .startsWith(searchTerm.toLowerCase())
+                )
+                .map((product) => (
+                  <li key={product.id}>
+                    {product.name}
+                    <button onClick={() => handleDeleteProduct(product.id)}>
+                      <TrashIcon />
+                    </button>
+                  </li>
+                ))}
+            </ul>
           </div>
-          <ul className={styles.pantryList}>
-            {products
-              .filter((product) =>
-                product.name.toLowerCase().startsWith(searchTerm.toLowerCase())
-              )
-              .map((product) => (
-                <li key={product.id}>
-                  {product.name}
-                  <button onClick={() => handleDeleteProduct(product.id)}>
-                    USUŃ
-                  </button>
-                </li>
-              ))}
-          </ul>
+
           <div className={styles.pantryBtnWrapper}>
             <button className={styles.pantryBtn} onClick={togglePantry}>
               ZAMKNIJ SPICHLERZ
@@ -514,6 +530,7 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
+      <Copyright />
     </div>
   );
 };
