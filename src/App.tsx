@@ -333,240 +333,247 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <Header />
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
 
-      {loading && <Loader />}
+    <div>
+      <div className={styles.container}>
+        <Header />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
 
-      {modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
+        {loading && <Loader />}
 
-      {response && !showMealPlan && (
-        <div className={styles.responseWrapper}>
-          <p className={styles.response}>{response}</p>
-          <div className={styles.responseButtons}>
-            <button
-              onClick={() => {
-                setShowAddFavorite(true);
-              }}
-            >
-              DODAJ DO JADŁOSPISU
-            </button>
+        {modalResponse && (
+          <Modal message={modalResponse} onClose={closeModal} />
+        )}
 
-            <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
-            <button onClick={handleClear}>ZAMKNIJ</button>
+        {response && !showMealPlan && (
+          <div className={styles.responseWrapper}>
+            <p className={styles.response}>{response}</p>
+            <div className={styles.responseButtons}>
+              <button
+                onClick={() => {
+                  setShowAddFavorite(true);
+                }}
+              >
+                DODAJ DO JADŁOSPISU
+              </button>
+
+              <button onClick={handleGenerateMeal}>
+                GENERUJ INNE JEDZONKO
+              </button>
+              <button onClick={handleClear}>ZAMKNIJ</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {showAddFavorite && (
-        <div
-          style={{
-            position: "fixed",
-            zIndex: 999,
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "#0a2533",
-            padding: "2rem",
-            borderRadius: "10px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "1rem",
-          }}
-        >
-          <input
-            value={favoriteName}
-            onChange={(e) => setFavoriteName(e.target.value)}
-            placeholder="Nazwij swój jadłospis..."
-            className={styles.favInput}
-          />
-          <button className={styles.favButton} onClick={handleSaveFavorite}>
-            ZAPISZ
-          </button>
-        </div>
-      )}
-
-      {!showPantry && !showMealPlan && !response && (
-        <div className={styles.actionsWrapper}>
-          <button className={styles.pantryMainBtn} onClick={togglePantry}>
-            SPICHLERZ
-          </button>
-          <button className={styles.mealsMainBtn} onClick={toggleMealPlan}>
-            JADŁOSPISY
-          </button>
-        </div>
-      )}
-
-      {!showPantry && !showMealPlan && (
-        <div className={styles.mainWrapper}>
-          <SpeechToText
-            onTranscript={handleTranscription}
-            onClear={handleClear}
-          />
-          <textarea
-            className={styles.textarea}
-            value={quickMealInput}
-            onChange={(e) => handleUptadeTextArea(e.target.value)}
-            placeholder="Wpisz produkty..."
-          />
-          <button
-            className={styles.addButton}
-            onClick={handleAddProduct}
-            disabled={quickMealInput.trim() === ""}
+        {showAddFavorite && (
+          <div
+            style={{
+              position: "fixed",
+              zIndex: 999,
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "#0a2533",
+              padding: "2rem",
+              borderRadius: "10px",
+              display: "flex",
+              justifyContent: "center",
+              gap: "1rem",
+            }}
           >
-            DODAJ DO SPICHLERZA
-          </button>
-          <div className={styles.buttonsWrapper}>
-            <button className={styles.buttonMain} onClick={handleGenerateMeal}>
-              SZYBKIE JEDZONKO
+            <input
+              value={favoriteName}
+              onChange={(e) => setFavoriteName(e.target.value)}
+              placeholder="Nazwij swój jadłospis..."
+              className={styles.favInput}
+            />
+            <button className={styles.favButton} onClick={handleSaveFavorite}>
+              ZAPISZ
             </button>
-            <div className={styles.dropdownWrapper}>
-              {dropdownVisible && (
-                <div
-                  className={`${styles.dropdown} ${styles.dropdownUp}`}
-                  ref={dropdownRef}
-                >
-                  <button
-                    className={styles.dropdownButton}
-                    onClick={handleGenerateHealthyMeal}
+          </div>
+        )}
+
+        {!showPantry && !showMealPlan && !response && (
+          <div className={styles.actionsWrapper}>
+            <button className={styles.pantryMainBtn} onClick={togglePantry}>SPICHLERZ</button>
+            <button className={styles.mealsMainBtn} onClick={toggleMealPlan}>JADŁOSPISY</button>
+          </div>
+        )}
+
+        {!showPantry && !showMealPlan && (
+          <div className={styles.mainWrapper}>
+            <SpeechToText
+              onTranscript={handleTranscription}
+              onClear={handleClear}
+            />
+            <textarea
+              className={styles.textarea}
+              value={quickMealInput}
+              onChange={(e) => handleUptadeTextArea(e.target.value)}
+              placeholder="Wpisz produkty..."
+            />
+            <button
+              className={styles.addButton}
+              onClick={handleAddProduct}
+              disabled={quickMealInput.trim() === ""}
+            >
+              DODAJ DO SPICHLERZA
+            </button>
+            <div className={styles.buttonsWrapper}>
+              <button
+                className={styles.buttonMain}
+                onClick={handleGenerateMeal}
+              >
+                SZYBKIE JEDZONKO
+              </button>
+              <div className={styles.dropdownWrapper}>
+                {dropdownVisible && (
+                  <div
+                    className={`${styles.dropdown} ${styles.dropdownUp}`}
+                    ref={dropdownRef}
                   >
-                    <LeftArrow />
-                    ZDROWE JEDZONKO
-                  </button>
+                    <button
+                      className={styles.dropdownButton}
+                      onClick={handleGenerateHealthyMeal}
+                    >
+                      <LeftArrow />
+                      ZDROWE JEDZONKO
+                    </button>
+                    <button
+                      className={styles.dropdownButton}
+                      onClick={handleGenerateMealPlan}
+                    >
+                      <LeftArrow />
+                      JADŁOSPIS NA CAŁY DZIEŃ
+                    </button>
+                    <button
+                      className={styles.dropdownButton}
+                      onClick={handleGenerateBreakfast}
+                    >
+                      <LeftArrow />
+                      SMACZNE ŚNIADANKO
+                    </button>
+                    <button
+                      className={styles.dropdownButton}
+                      onClick={handleGenerateDinner}
+                    >
+                      <LeftArrow />
+                      SYTY OBIADEK
+                    </button>
+                  </div>
+                )}
+                <button className={styles.buttonMain} onClick={toggleDropdown}>
+                  KONKRETNE JEDZONKO
+                </button>
+              </div>
+            </div>
+            <Checkbox
+              id="showProductNames"
+              label="uwzględnij spichlerz"
+              checked={showProductNames}
+              onChange={(e) => setShowProductNames(e.target.checked)}
+            />
+          </div>
+        )}
+
+        {showPantry && (
+          <div className={styles.pantryContainer}>
+            <div className={styles.pantryBox}>
+              <div className={styles.searchBox}>
+                <input
+                  type="text"
+                  placeholder="Szukaj produktu..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
                   <button
-                    className={styles.dropdownButton}
-                    onClick={handleGenerateMealPlan}
+                    className={styles.clearButton}
+                    onClick={() => setSearchTerm("")}
                   >
-                    <LeftArrow />
-                    JADŁOSPIS NA CAŁY DZIEŃ
+                    &times;
                   </button>
-                  <button
-                    className={styles.dropdownButton}
-                    onClick={handleGenerateBreakfast}
-                  >
-                    <LeftArrow />
-                    SMACZNE ŚNIADANKO
-                  </button>
-                  <button
-                    className={styles.dropdownButton}
-                    onClick={handleGenerateDinner}
-                  >
-                    <LeftArrow />
-                    SYTY OBIADEK
-                  </button>
-                </div>
-              )}
-              <button className={styles.buttonMain} onClick={toggleDropdown}>
-                KONKRETNE JEDZONKO
+                )}
+              </div>
+              <ul className={styles.pantryList}>
+                {products
+                  .filter((product) =>
+                    product.name
+                      .toLowerCase()
+                      .startsWith(searchTerm.toLowerCase())
+                  )
+                  .map((product) => (
+                    <li key={product.id}>
+                      {product.name}
+                      <button onClick={() => handleDeleteProduct(product.id)}>
+                        <TrashIcon />
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+
+            <div className={styles.pantryBtnWrapper}>
+              <button className={styles.pantryBtn} onClick={togglePantry}>
+                ZAMKNIJ SPICHLERZ
+              </button>
+              <button className={styles.pantryBtn} onClick={handleDeletePantry}>
+                WYCZYŚĆ SPICHLERZ
               </button>
             </div>
           </div>
-          <Checkbox
-            id="showProductNames"
-            label="uwzględnij spichlerz"
-            checked={showProductNames}
-            onChange={(e) => setShowProductNames(e.target.checked)}
-          />
-        </div>
-      )}
+        )}
 
-      {showPantry && (
-        <div className={styles.pantryContainer}>
-          <div className={styles.pantryBox}>
-            <div className={styles.searchBox}>
-              <input
-                type="text"
-                placeholder="Szukaj produktu..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              {searchTerm && (
-                <button
-                  className={styles.clearButton}
-                  onClick={() => setSearchTerm("")}
-                >
-                  &times;
-                </button>
-              )}
+        {showMealPlan && (
+          <div className={styles.mealPlanContainer}>
+            <div className={styles.pantryBtnWrapper}>
+              <button
+                className={styles.closeMealsBtn}
+                onClick={handleDeleteAllMealPlans}
+              >
+                USUŃ WSZYSTKIE
+              </button>
+              <button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
+                ZAMKNIJ
+              </button>
             </div>
-            <ul className={styles.pantryList}>
-              {products
-                .filter((product) =>
-                  product.name
-                    .toLowerCase()
-                    .startsWith(searchTerm.toLowerCase())
-                )
-                .map((product) => (
-                  <li key={product.id}>
-                    {product.name}
-                    <button onClick={() => handleDeleteProduct(product.id)}>
+            <div className={styles.mealsWrapper}>
+              {mealPlans.map((plan, index) => (
+                <div className={styles.mealWrapper} key={index}>
+                  <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>
+                    {plan.name}
+                  </h3>
+                  {showMealPlanSingle === plan.id && <p>{plan.content}</p>}
+                  <div className={styles.mealButtons}>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteMealPlan(plan.id);
+                      }}
+                    >
                       <TrashIcon />
                     </button>
-                  </li>
-                ))}
-            </ul>
-          </div>
-
-          <div className={styles.pantryBtnWrapper}>
-            <button className={styles.pantryBtn} onClick={togglePantry}>
-              ZAMKNIJ SPICHLERZ
-            </button>
-            <button className={styles.pantryBtn} onClick={handleDeletePantry}>
-              WYCZYŚĆ SPICHLERZ
-            </button>
-          </div>
-        </div>
-      )}
-
-      {showMealPlan && (
-        <div className={styles.mealPlanContainer}>
-          <div className={styles.pantryBtnWrapper}>
-            <button
-              className={styles.closeMealsBtn}
-              onClick={handleDeleteAllMealPlans}
-            >
-              USUŃ WSZYSTKIE
-            </button>
-            <button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
-              ZAMKNIJ
-            </button>
-          </div>
-          <div className={styles.mealsWrapper}>
-            {mealPlans.map((plan, index) => (
-              <div className={styles.mealWrapper} key={index}>
-                <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>
-                  {plan.name}
-                </h3>
-                {showMealPlanSingle === plan.id && <p>{plan.content}</p>}
-                <div className={styles.mealButtons}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteMealPlan(plan.id);
-                    }}
-                  >
-                    <TrashIcon />
-                  </button>
-                  <button onClick={() => checkToDoAgain(plan.content)}>
-                    SPRAWDŹ
-                  </button>
+                    <button onClick={() => checkToDoAgain(plan.content)}>
+                      SPRAWDŹ
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
+
       <Copyright />
     </div>
   );
