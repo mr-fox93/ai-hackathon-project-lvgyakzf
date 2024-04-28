@@ -333,6 +333,7 @@ const App: React.FC = () => {
   };
 
   return (
+
     <div>
       <div className={styles.container}>
         <Header />
@@ -404,8 +405,8 @@ const App: React.FC = () => {
 
         {!showPantry && !showMealPlan && !response && (
           <div className={styles.actionsWrapper}>
-            <button onClick={togglePantry}>SPICHLERZ</button>
-            <button onClick={toggleMealPlan}>JADŁOSPISY</button>
+            <button className={styles.pantryMainBtn} onClick={togglePantry}>SPICHLERZ</button>
+            <button className={styles.mealsMainBtn} onClick={toggleMealPlan}>JADŁOSPISY</button>
           </div>
         )}
 
@@ -572,6 +573,7 @@ const App: React.FC = () => {
           </div>
         )}
       </div>
+
       <Copyright />
     </div>
   );
