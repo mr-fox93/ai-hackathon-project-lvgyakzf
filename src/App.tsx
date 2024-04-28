@@ -30,6 +30,7 @@ const App: React.FC = () => {
 	const [showAddFavorite, setShowAddFavorite] = useState(false)
 	const [favoriteName, setFavoriteName] = useState('')
 	const [showMealPlanSingle, setShowMealPlanSingle] = useState<number | null>(null)
+  const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		getMealPlans()
@@ -182,11 +183,17 @@ const App: React.FC = () => {
 	const handleToggleMealPlanDisplay = (id: number) => {
 		setShowMealPlanSingle(prev => prev === id ? null : id);
 	  };
+  const handleDeletePantry = async () => {
+    await deleteDatabase(() => {
+        setProducts([]);
+        console.log('All data has been cleared from UI');
+    });
+}
 
 	return (
 		<div className={styles.container}>
 			{loading && <Loader />}
-			{response && !showMealPlan && !showMealPlan && (
+			{response && !showMealPlan && (
 				<div className={styles.responseWrapper}>
 					<p className={styles.response}>{response}</p>
 					<button onClick={() => setShowAddFavorite(true)}>DODAJ DO ULUBIONYCH</button>
@@ -243,25 +250,35 @@ const App: React.FC = () => {
 			)}
 
 			{showPantry && (
-				<div className={styles.pantryContainer}>
-					<ul className={styles.pantryList}>
-						{products.map(product => (
-							<li key={product.id}>
-								{product.name}
-								<button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-							</li>
-						))}
-					</ul>
-					<div className={styles.pantryBtnWrapper}>
-						<button className={styles.pantryBtn} onClick={togglePantry}>
-							ZAMKNIJ SPICHLERZ
-						</button>
-						<button className={styles.pantryBtn} onClick={deleteDatabase}>
-							CLEAR ALL
-						</button>
-					</div>
-				</div>
-			)}
+        <div className={styles.pantryContainer}>
+           <div className={styles.searchBox}>
+            <input
+                type="text"
+                placeholder="Szukaj produktu..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
+            />
+             {searchTerm && (
+        <button className={styles.clearButton} onClick={() => setSearchTerm("")}>
+            &times;
+        </button>
+    )}
+       </div>
+        <ul className={styles.pantryList}>
+        {products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase())).map(product => (
+            <li key={product.id}>
+                {product.name}
+                <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+            </li>
+        ))}
+        </ul>
+        <div className={styles.pantryBtnWrapper}>
+            <button className={styles.pantryBtn} onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
+            <button className={styles.pantryBtn} onClick={handleDeletePantry}>CLEAR ALL</button>
+        </div>
+    </div>
+          )}
 
 			{showMealPlan && (
 				<div className={styles.mealPlanContainer}>
@@ -274,7 +291,7 @@ const App: React.FC = () => {
         <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>{plan.name}</h3>
         {showMealPlanSingle === plan.id && <p>{plan.content}</p>}
         <button onClick={(e) => {
-          e.stopPropagation();  // Prevent the meal plan content toggle when clicking the button
+          e.stopPropagation();
           handleDeleteMealPlan(plan.id);
         }}>Delete</button>
       </div>
