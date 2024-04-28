@@ -3,29 +3,30 @@ import { fetchChatCompletion } from "./apiService";
 import styles from "./app.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import {
-  addProduct,
-  getProducts,
-  removeProduct,
-  deleteDatabase,
-  getMealPlans,
-  addMealPlan,
-  removeMealPlan,
-} from "./database";
-import { useStore } from "./store/useStore";
-import SpeechToText from "./SpeechTotext";
-import { knownProducts } from "./knownProducts";
-import Checkbox from "./components/Checkbox/Checkbox";
-import Loader from "./components/Loader/Loader";
-import Header from "./components/Header/Header";
-import CloseIcon from "./assets/CloseIcon";
-import LeftArrow from "./assets/LeftArrow";
-import Modal from "./components/Modal/Modal";
+	addProduct,
+	getProducts,
+	removeProduct,
+	deleteDatabase,
+	getMealPlans,
+	addMealPlan,
+	removeMealPlan,
+} from './database'
+import { useStore } from './store/useStore'
+import SpeechToText from './SpeechTotext'
+import { knownProducts } from './knownProducts'
+import Checkbox from './components/Checkbox/Checkbox'
+import Loader from './components/Loader/Loader'
+import Header from './components/Header/Header'
+import CloseIcon from './assets/CloseIcon'
+import LeftArrow from './assets/LeftArrow'
+import Modal from './components/Modal/Modal'
 
 interface MealPlan {
-  id: number;
-  name: string; // Add name field
-  content: string;
+	id: number
+	name: string // Add name field
+	content: string
 }
 
 const App: React.FC = () => {
