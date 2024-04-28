@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/ai-hackathon-project-lvgyakzf/static/css/main.39ee801f.css",
-    "main.js": "/ai-hackathon-project-lvgyakzf/static/js/main.6eeddc7b.js",
+    "main.css": "/ai-hackathon-project-lvgyakzf/static/css/main.04f41040.css",
+    "main.js": "/ai-hackathon-project-lvgyakzf/static/js/main.be6d8c99.js",
     "static/js/453.122379c9.chunk.js": "/ai-hackathon-project-lvgyakzf/static/js/453.122379c9.chunk.js",
     "static/media/GastroGuru.png": "/ai-hackathon-project-lvgyakzf/static/media/GastroGuru.9809c9adcff3803350af.png",
     "static/media/button2.png": "/ai-hackathon-project-lvgyakzf/static/media/button2.6774f725ade5e760f76d.png",
     "static/media/button1.png": "/ai-hackathon-project-lvgyakzf/static/media/button1.0f7518584eff9c6841f6.png",
     "index.html": "/ai-hackathon-project-lvgyakzf/index.html",
-    "main.39ee801f.css.map": "/ai-hackathon-project-lvgyakzf/static/css/main.39ee801f.css.map",
-    "main.6eeddc7b.js.map": "/ai-hackathon-project-lvgyakzf/static/js/main.6eeddc7b.js.map",
+    "main.04f41040.css.map": "/ai-hackathon-project-lvgyakzf/static/css/main.04f41040.css.map",
+    "main.be6d8c99.js.map": "/ai-hackathon-project-lvgyakzf/static/js/main.be6d8c99.js.map",
     "453.122379c9.chunk.js.map": "/ai-hackathon-project-lvgyakzf/static/js/453.122379c9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.39ee801f.css",
-    "static/js/main.6eeddc7b.js"
+    "static/css/main.04f41040.css",
+    "static/js/main.be6d8c99.js"
   ]
 }
