@@ -130,7 +130,6 @@
   border: 1px solid var(--gray-color);
   border-radius: 10px;
   padding: 1rem;
-  margin-top: 1rem;
 }
 .pantryBtnWrapper {
   display: flex;
@@ -164,7 +163,6 @@
   border: 1px solid var(--gray-color);
   border-radius: 10px;
   padding: 1rem;
-  margin-top: 1rem;
 }
 
 .mealButtons button {
@@ -235,7 +233,6 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: auto;
-  margin-top: 1rem;
 }
 
 .responseButtons {
