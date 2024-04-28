@@ -304,7 +304,8 @@ const App: React.FC = () => {
       <Header />
       {loading && <Loader />}
 
-         {modalResponse && <Modal message={modalResponse} onClose={closeModal} />
+      {modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
+
       {response && !showMealPlan && (
         <div className={styles.responseWrapper}>
           <p className={styles.response}>{response}</p>
@@ -315,7 +316,6 @@ const App: React.FC = () => {
             <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
             <button onClick={handleClear}>ZAMKNIJ</button>
           </div>
-
         </div>
       )}
 
@@ -337,7 +337,6 @@ const App: React.FC = () => {
             placeholder="Wymyśl nazwę"
           />
           <button onClick={handleSaveFavorite}>ZAPISZ</button>
-
         </div>
       )}
 
@@ -359,8 +358,6 @@ const App: React.FC = () => {
             value={quickMealInput}
             onChange={(e) => handleUptadeTextArea(e.target.value)}
             placeholder="Wpisz produkty..."
-
-
           />
           <button
             className={styles.addButton}
@@ -370,7 +367,6 @@ const App: React.FC = () => {
             DODAJ DO SPICHLERZA
           </button>
           <div className={styles.buttonsWrapper}>
-
             <button className={styles.buttonMain} onClick={handleGenerateMeal}>
               SZYBKIE JEDZONKO
             </button>
@@ -410,7 +406,6 @@ const App: React.FC = () => {
               <button className={styles.buttonMain} onClick={toggleDropdown}>
                 KONKRETNE JEDZONKO
               </button>
-
             </div>
           </div>
           <Checkbox
@@ -430,8 +425,6 @@ const App: React.FC = () => {
               placeholder="Szukaj produktu..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-
-
             />
             {searchTerm && (
               <button
@@ -473,7 +466,6 @@ const App: React.FC = () => {
             ZAMKNIJ JADŁOSPISY
           </button>
           <div className={styles.mealsWrapper}>
-
             {mealPlans.map((plan, index) => (
               <div className={styles.mealWrapper} key={index}>
                 <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>
@@ -493,7 +485,6 @@ const App: React.FC = () => {
                     SPRAWDŹ CZY MOŻESZ
                   </button>
                 </div>
-
               </div>
             ))}
           </div>
