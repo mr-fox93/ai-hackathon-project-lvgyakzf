@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { fetchChatCompletion } from './apiService'
 import styles from './app.module.css'
 import { ToastContainer, toast } from 'react-toastify'
@@ -45,6 +45,22 @@ const App: React.FC = () => {
 	const notifyGranary = () => toast('Dodano do spichlerza')
 	const notifyMealPlan = () => toast('Dodano do planu posiłków')
 
+
+	const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            setDropdownVisible(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+	
 	const toggleDropdown = () => {
 		setDropdownVisible(!dropdownVisible)
 	}
@@ -380,7 +396,7 @@ const App: React.FC = () => {
 						</button>
 						<div className={styles.dropdownWrapper}>
 							{dropdownVisible && (
-								<div className={`${styles.dropdown} ${styles.dropdownUp}`}>
+								<div className={`${styles.dropdown} ${styles.dropdownUp}`} ref={dropdownRef}>
 									<button className={styles.dropdownButton} onClick={handleGenerateHealthyMeal}>
 										<LeftArrow />
 										ZDROWE JEDZONKO
