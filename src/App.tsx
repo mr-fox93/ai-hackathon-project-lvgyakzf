@@ -26,6 +26,7 @@ const App: React.FC = () => {
 	const [response, setResponse] = useState('')
 	const [mealPlans, setMealPlans] = useState([] as MealPlan[])
 	const [showProductNames, setShowProductNames] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		getMealPlans()
@@ -224,25 +225,35 @@ const App: React.FC = () => {
 			)}
 
 			{showPantry && (
-				<div className={styles.pantryContainer}>
-					<ul className={styles.pantryList}>
-						{products.map(product => (
-							<li key={product.id}>
-								{product.name}
-								<button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-							</li>
-						))}
-					</ul>
-					<div className={styles.pantryBtnWrapper}>
-						<button className={styles.pantryBtn} onClick={togglePantry}>
-							ZAMKNIJ SPICHLERZ
-						</button>
-						<button className={styles.pantryBtn} onClick={handleDeletePantry}>
-							CLEAR ALL
-						</button>
-					</div>
-				</div>
-			)}
+        <div className={styles.pantryContainer}>
+           <div className={styles.searchBox}>
+            <input
+                type="text"
+                placeholder="Szukaj produktu..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
+            />
+             {searchTerm && (
+        <button className={styles.clearButton} onClick={() => setSearchTerm("")}>
+            &times;
+        </button>
+    )}
+       </div>
+        <ul className={styles.pantryList}>
+        {products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase())).map(product => (
+            <li key={product.id}>
+                {product.name}
+                <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+            </li>
+        ))}
+        </ul>
+        <div className={styles.pantryBtnWrapper}>
+            <button className={styles.pantryBtn} onClick={togglePantry}>ZAMKNIJ SPICHLERZ</button>
+            <button className={styles.pantryBtn} onClick={handleDeletePantry}>CLEAR ALL</button>
+        </div>
+    </div>
+          )}
 
 			{showMealPlan && (
 				<div className={styles.mealPlanContainer}>
