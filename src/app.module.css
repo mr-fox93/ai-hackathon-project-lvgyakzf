@@ -117,9 +117,8 @@
   width: 100%;
   align-items: center;
   height: 250px;
-
+  gap: 10px;
   margin-top: 15px;
-
 }
 
 .pantryContainer {
@@ -242,7 +241,7 @@
 
 .responseButtons {
   display: flex;
-  gap: 1rem;
+  gap: 5px;
   margin-top: 1rem;
   justify-content: space-between;
 
@@ -254,7 +253,7 @@
     border-radius: 50px;
     cursor: pointer;
     color: white;
-    padding: 0.5rem 0;
+    padding: 0.5rem 0.3rem;
   }
 }
 
