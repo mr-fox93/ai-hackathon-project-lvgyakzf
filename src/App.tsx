@@ -175,10 +175,17 @@ const App: React.FC = () => {
 		loadMealPlans()
 	}
 
+  const handleDeletePantry = async () => {
+    await deleteDatabase(() => {
+        setProducts([]);
+        console.log('All data has been cleared from UI');
+    });
+}
+
 	return (
 		<div className={styles.container}>
 			{loading && <Loader />}
-			{response && !showMealPlan && !showMealPlan && (
+			{response && !showMealPlan && (
 				<div className={styles.responseWrapper}>
 					<p className={styles.response}>{response}</p>
 					<button onClick={handleAddToFavorites}>Add to Favorites</button>
@@ -230,7 +237,7 @@ const App: React.FC = () => {
 						<button className={styles.pantryBtn} onClick={togglePantry}>
 							ZAMKNIJ SPICHLERZ
 						</button>
-						<button className={styles.pantryBtn} onClick={deleteDatabase}>
+						<button className={styles.pantryBtn} onClick={handleDeletePantry}>
 							CLEAR ALL
 						</button>
 					</div>
