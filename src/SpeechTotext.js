@@ -1,71 +1,70 @@
-import React, { useState, useEffect } from "react";
-import styles from "./app.module.css";
-import MicIcon from "./assets/MicIcon";
+import React, { useState, useEffect, useRef } from 'react';
+import styles from './app.module.css';
+import MicIcon from './assets/MicIcon';
 
 const SpeechToText = ({ onTranscript, onClear }) => {
-  const [transcript, setTranscript] = useState("");
-  const [listening, setListening] = useState(false);
-  const speechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new speechRecognition();
+    const [transcript, setTranscript] = useState('');
+    const [listening, setListening] = useState(false);
+    const recognitionRef = useRef(null);
 
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = "pl-PL";
-
-  recognition.onresult = (event) => {
-    let newTranscript = "";
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      const result = event.results[i];
-      const transcriptFragment = result[0].transcript;
-      if (result.isFinal) {
-        newTranscript += transcriptFragment + " ";
-      }
+    if (!recognitionRef.current) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = 'pl-PL';
     }
-    setTranscript((prevTranscript) => {
-      const updatedTranscript = prevTranscript + newTranscript;
-      onTranscript(updatedTranscript); // Przekazujemy zaktualizowany cały transkrypt
-      return updatedTranscript; // Zwracamy zaktualizowany cały transkrypt
-    });
-  };
 
-  const startListening = () => {
-    recognition.start();
-  };
+    const { current: recognition } = recognitionRef;
 
-  const stopListening = () => {
-    recognition.stop();
-  };
+    recognition.onresult = event => {
+        let newTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            const result = event.results[i];
+            if (result.isFinal) {
+                newTranscript += result[0].transcript + ' ';
+            }
+        }
+        setTranscript(prevTranscript => {
+            const updatedTranscript = prevTranscript.includes(newTranscript.trim()) ? prevTranscript : prevTranscript + newTranscript;
+            onTranscript(updatedTranscript.trim());
+            return updatedTranscript;
+        });
+    };
 
-  const clearTranscript = () => {
-    setTranscript("");
-    if (listening) {
-      recognition.stop();
-      setListening(false);
-    }
-    onClear();
-  };
+    const startListening = () => {
+        setListening(true);
+        recognition.start();
+    };
 
-  useEffect(() => {
-    listening ? startListening() : stopListening();
-    return stopListening;
-  }, [listening]);
+    const stopListening = () => {
+        recognition.stop();
+        setListening(false);
+    };
 
-  return (
-    <div className={styles.buttonBox}>
-      <button
-        className={styles.speachToText}
-        onMouseDown={startListening}
-        onMouseUp={stopListening}
-      >
-        <MicIcon />
-        <span>Naciśnij i mów</span>
-      </button>
-      <button className={styles.speachToText} onClick={clearTranscript}>
-        Wyczyść
-      </button>
-    </div>
-  );
+    const clearTranscript = () => {
+        setTranscript('');
+        stopListening();
+        onClear();
+    };
+
+    useEffect(() => {
+        return () => {
+            recognition.stop();
+        };
+    }, []);
+
+    return (
+        <div className={styles.buttonBox}>
+            <button className={styles.speachToText} onTouchStart={startListening} onTouchEnd={stopListening}>
+                <MicIcon />
+                <span>Naciśnij i mów</span>
+            </button>
+            <button className={styles.speachToText} onClick={clearTranscript}>
+                Wyczyść
+            </button>
+        </div>
+    );
 };
 
 export default SpeechToText;
