@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--background);
+  background-color: var(--orange-color);
   width: 20px;
   height: 20px;
   cursor: pointer;
@@ -18,8 +18,12 @@
   transition: all 0.2s;
 }
 
+input[type="checkbox"] {
+  accent-color: var(--orange-color);
+}
+
 .checked {
-  background-color: var(--alert);
+  background-color: var(--orange-color);
 }
 
 .hidden {
@@ -31,11 +35,11 @@
   width: 16px;
   height: 16px;
   border-radius: 50%; /* Kółko */
-  border: 2px solid var(--border-color); /* Grubość i kolor obramowania */
+  border: 2px solid var(--orange-color); /* Grubość i kolor obramowania */
 }
 
 .custom-checkbox.checked {
-  background-color: var(--alert); /* Kolor wypełnienia po zaznaczeniu */
+  background-color: var(--orange-color); /* Kolor wypełnienia po zaznaczeniu */
 }
 
 .label {

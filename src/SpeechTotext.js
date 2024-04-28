@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./app.module.css";
+import MicIcon from "./assets/MicIcon";
 
 const SpeechToText = ({ onTranscript, onClear }) => {
   const [transcript, setTranscript] = useState("");
@@ -21,13 +22,12 @@ const SpeechToText = ({ onTranscript, onClear }) => {
         newTranscript += transcriptFragment + " ";
       }
     }
-    setTranscript(prevTranscript => {
+    setTranscript((prevTranscript) => {
       const updatedTranscript = prevTranscript + newTranscript;
       onTranscript(updatedTranscript); // Przekazujemy zaktualizowany cały transkrypt
       return updatedTranscript; // Zwracamy zaktualizowany cały transkrypt
     });
   };
-  
 
   const startListening = () => {
     recognition.start();
@@ -52,16 +52,17 @@ const SpeechToText = ({ onTranscript, onClear }) => {
   }, [listening]);
 
   return (
-    <div>
+    <div className={styles.buttonBox}>
       <button
         className={styles.speachToText}
         onMouseDown={startListening}
         onMouseUp={stopListening}
       >
-        Press & speak
+        <MicIcon />
+        <span>Naciśnij i mów</span>
       </button>
       <button className={styles.speachToText} onClick={clearTranscript}>
-        Clear
+        Wyczyść
       </button>
     </div>
   );

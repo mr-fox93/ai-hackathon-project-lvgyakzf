@@ -17,6 +17,7 @@ import Checkbox from "./components/Checkbox/Checkbox";
 import Loader from "./components/Loader/Loader";
 import Header from "./components/Header/Header";
 import CloseIcon from "./assets/CloseIcon";
+import LeftArrow from "./assets/LeftArrow";
 import Modal from "./components/Modal/Modal";
 
 interface MealPlan {
@@ -57,7 +58,6 @@ const App: React.FC = () => {
     setQuickMealInput,
     setResult,
     results,
-
     showPantry,
     setShowPantry,
     setModalResponse,
@@ -182,6 +182,7 @@ const App: React.FC = () => {
     if (products.length === 0) {
       // alert('TWÓJ SPICHLERZ JEST PUSTY MÓJ PANIE')
       setModalResponse("TWÓJ SPICHLERZ JEST PUSTY MÓJ PANIE");
+
       setLoading(false);
       return;
     }
@@ -190,12 +191,14 @@ const App: React.FC = () => {
 
     await fetchChatCompletion(
       `Czy mogę wykonać ten przepis: ${plan} bazując na składnikach, które mam w moim spichlerzu: ${productNames}. Sprawdź dokładnie to co mam i czy zgadza się z tym czego wymaga przepis. Jeśli mam część składników wymień te których nie mam. Jak mam zupełnie inne zaproponuj przepis do zrobienia z tego co mam.`,
+
       // (response: React.SetStateAction<string>) => {
       (response: string) => {
         // Zmień tutaj typ na string
 
         // alert(response)
         setModalResponse(response);
+
         setLoading(false);
       },
       setLoading
@@ -300,15 +303,19 @@ const App: React.FC = () => {
     <div className={styles.container}>
       <Header />
       {loading && <Loader />}
-      {modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
+
+         {modalResponse && <Modal message={modalResponse} onClose={closeModal} />
       {response && !showMealPlan && (
         <div className={styles.responseWrapper}>
           <p className={styles.response}>{response}</p>
-          <button onClick={() => setShowAddFavorite(true)}>
-            DODAJ DO ULUBIONYCH
-          </button>
-          <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
-          <button onClick={handleClear}>X</button>
+          <div className={styles.responseButtons}>
+            <button onClick={() => setShowAddFavorite(true)}>
+              DODAJ DO JADŁOSPISU
+            </button>
+            <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
+            <button onClick={handleClear}>ZAMKNIJ</button>
+          </div>
+
         </div>
       )}
 
@@ -329,7 +336,8 @@ const App: React.FC = () => {
             onChange={(e) => setFavoriteName(e.target.value)}
             placeholder="Wymyśl nazwę"
           />
-          <button onClick={handleSaveFavorite}>Zapisz</button>
+          <button onClick={handleSaveFavorite}>ZAPISZ</button>
+
         </div>
       )}
 
@@ -350,7 +358,9 @@ const App: React.FC = () => {
             className={styles.textarea}
             value={quickMealInput}
             onChange={(e) => handleUptadeTextArea(e.target.value)}
-            placeholder="Enter products..."
+            placeholder="Wpisz produkty..."
+
+
           />
           <button
             className={styles.addButton}
@@ -360,23 +370,47 @@ const App: React.FC = () => {
             DODAJ DO SPICHLERZA
           </button>
           <div className={styles.buttonsWrapper}>
-            <button onClick={handleGenerateMeal}>SZYBKIE JEDZONKO</button>
+
+            <button className={styles.buttonMain} onClick={handleGenerateMeal}>
+              SZYBKIE JEDZONKO
+            </button>
             <div className={styles.dropdownWrapper}>
               {dropdownVisible && (
-                <div>
-                  <button onClick={handleGenerateHealthyMeal}>
+                <div className={`${styles.dropdown} ${styles.dropdownUp}`}>
+                  <button
+                    className={styles.dropdownButton}
+                    onClick={handleGenerateHealthyMeal}
+                  >
+                    <LeftArrow />
                     ZDROWE JEDZONKO
                   </button>
-                  <button onClick={handleGenerateMealPlan}>
+                  <button
+                    className={styles.dropdownButton}
+                    onClick={handleGenerateMealPlan}
+                  >
+                    <LeftArrow />
                     JADŁOSPIS NA CAŁY DZIEŃ
                   </button>
-                  <button onClick={handleGenerateBreakfast}>
+                  <button
+                    className={styles.dropdownButton}
+                    onClick={handleGenerateBreakfast}
+                  >
+                    <LeftArrow />
                     SMACZNE ŚNIADANKO
                   </button>
-                  <button onClick={handleGenerateDinner}>SYTY OBIADEK</button>
+                  <button
+                    className={styles.dropdownButton}
+                    onClick={handleGenerateDinner}
+                  >
+                    <LeftArrow />
+                    SYTY OBIADEK
+                  </button>
                 </div>
               )}
-              <button onClick={toggleDropdown}>KONKRETNE JEDZONKO</button>
+              <button className={styles.buttonMain} onClick={toggleDropdown}>
+                KONKRETNE JEDZONKO
+              </button>
+
             </div>
           </div>
           <Checkbox
@@ -396,7 +430,8 @@ const App: React.FC = () => {
               placeholder="Szukaj produktu..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={styles.searchInput}
+
+
             />
             {searchTerm && (
               <button
@@ -437,24 +472,28 @@ const App: React.FC = () => {
           <button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
             ZAMKNIJ JADŁOSPISY
           </button>
-          <div className={styles.flexWrapper}>
+          <div className={styles.mealsWrapper}>
+
             {mealPlans.map((plan, index) => (
               <div className={styles.mealWrapper} key={index}>
                 <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>
                   {plan.name}
                 </h3>
                 {showMealPlanSingle === plan.id && <p>{plan.content}</p>}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteMealPlan(plan.id);
-                  }}
-                >
-                  USUŃ
-                </button>
-                <button onClick={() => checkToDoAgain(plan.content)}>
-                  SPRAWDŹ CZY MOŻESZ
-                </button>
+                <div className={styles.mealButtons}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteMealPlan(plan.id);
+                    }}
+                  >
+                    USUŃ
+                  </button>
+                  <button onClick={() => checkToDoAgain(plan.content)}>
+                    SPRAWDŹ CZY MOŻESZ
+                  </button>
+                </div>
+
               </div>
             ))}
           </div>
