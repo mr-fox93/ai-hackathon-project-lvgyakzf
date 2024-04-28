@@ -309,8 +309,8 @@ const App: React.FC = () => {
 
   return (
     <div>
+      <Header />
       <div className={styles.container}>
-        <Header />
         <ToastContainer
           position="top-center"
           autoClose={2000}

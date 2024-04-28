@@ -13,7 +13,6 @@
 
 .chip > div {
   cursor: pointer;
-
 }
 
 .textarea {
@@ -43,14 +42,13 @@
 
 .container {
   width: 100%;
-  height: 100vh;
+  /*   height: 100vh; */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 16px;
   position: relative;
   background-color: white;
-
 }
 
 .buttonsWrapper {
@@ -164,7 +162,6 @@
   border-radius: 10px;
   padding: 1rem;
   margin-top: 1rem;
-
 }
 
 .mealButtons button {
@@ -282,14 +279,13 @@
 
 .mealWrapper {
   display: flex;
-justify-content: space-between;
-align-items: flex-start;
+  justify-content: space-between;
+  align-items: flex-start;
 
   background-color: inherit;
   border: 1px solid var(--gray-color);
   border-radius: 10px;
   padding: 0.5rem;
-
 }
 
 .closeMealsBtn {
@@ -309,7 +305,6 @@ align-items: flex-start;
   justify-content: center;
   align-items: center;
   width: 100%;
-
 }
 
 .flexWrapper {
@@ -522,19 +517,18 @@ align-items: flex-start;
   background-position: center;
 }
 
-
 .content {
   position: absolute;
-  top: 50%;  /* Przesuwa początek elementu do środka kontenera w pionie */
+  top: 50%; /* Przesuwa początek elementu do środka kontenera w pionie */
   left: 50%; /* Przesuwa początek elementu do środka kontenera w poziomie */
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
   width: 100%;
   background-color: #e0e0e0;
-border-radius: 10px;;
-padding: 10px;
-height: 300px;
-max-height: 300px;
-overflow: auto;
+  border-radius: 10px;
+  padding: 10px;
+  height: 300px;
+  max-height: 300px;
+  overflow: auto;
 }
 
 .closeContent {
