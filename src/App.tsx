@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fetchChatCompletion } from "./apiService";
 import styles from "./app.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   addProduct,
   getProducts,
@@ -38,6 +40,8 @@ const App: React.FC = () => {
   );
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const notifyGranary = () => toast("Dodano do spichlerza");
+  const notifyMealPlan = () => toast("Dodano do planu posiłków");
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -114,6 +118,7 @@ const App: React.FC = () => {
     }
 
     setQuickMealInput("");
+    notifyGranary();
   };
 
   const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
@@ -149,6 +154,7 @@ const App: React.FC = () => {
       setMealPlans((prev) => [...prev, newMealPlan]);
       setFavoriteName("");
       setShowAddFavorite(false);
+      notifyMealPlan();
     }
   };
 
@@ -302,20 +308,36 @@ const App: React.FC = () => {
   return (
     <div className={styles.container}>
       <Header />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       {loading && <Loader />}
 
-         {modalResponse && <Modal message={modalResponse} onClose={closeModal} />
+      {modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
       {response && !showMealPlan && (
         <div className={styles.responseWrapper}>
           <p className={styles.response}>{response}</p>
           <div className={styles.responseButtons}>
-            <button onClick={() => setShowAddFavorite(true)}>
+            <button
+              onClick={() => {
+                setShowAddFavorite(true);
+              }}
+            >
               DODAJ DO JADŁOSPISU
             </button>
+
             <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
             <button onClick={handleClear}>ZAMKNIJ</button>
           </div>
-
         </div>
       )}
 
@@ -337,7 +359,6 @@ const App: React.FC = () => {
             placeholder="Wymyśl nazwę"
           />
           <button onClick={handleSaveFavorite}>ZAPISZ</button>
-
         </div>
       )}
 
@@ -359,8 +380,6 @@ const App: React.FC = () => {
             value={quickMealInput}
             onChange={(e) => handleUptadeTextArea(e.target.value)}
             placeholder="Wpisz produkty..."
-
-
           />
           <button
             className={styles.addButton}
@@ -370,7 +389,6 @@ const App: React.FC = () => {
             DODAJ DO SPICHLERZA
           </button>
           <div className={styles.buttonsWrapper}>
-
             <button className={styles.buttonMain} onClick={handleGenerateMeal}>
               SZYBKIE JEDZONKO
             </button>
@@ -410,7 +428,6 @@ const App: React.FC = () => {
               <button className={styles.buttonMain} onClick={toggleDropdown}>
                 KONKRETNE JEDZONKO
               </button>
-
             </div>
           </div>
           <Checkbox
@@ -430,8 +447,6 @@ const App: React.FC = () => {
               placeholder="Szukaj produktu..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-
-
             />
             {searchTerm && (
               <button
@@ -473,7 +488,6 @@ const App: React.FC = () => {
             ZAMKNIJ JADŁOSPISY
           </button>
           <div className={styles.mealsWrapper}>
-
             {mealPlans.map((plan, index) => (
               <div className={styles.mealWrapper} key={index}>
                 <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>
@@ -493,7 +507,6 @@ const App: React.FC = () => {
                     SPRAWDŹ CZY MOŻESZ
                   </button>
                 </div>
-
               </div>
             ))}
           </div>
