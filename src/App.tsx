@@ -333,13 +333,12 @@ const App: React.FC = () => {
   };
 
   return (
-
     <div>
       <div className={styles.container}>
         <Header />
         <ToastContainer
           position="top-center"
-          autoClose={5000}
+          autoClose={2000}
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
@@ -347,6 +346,7 @@ const App: React.FC = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          theme="colored"
         />
 
         {loading && <Loader />}
@@ -405,8 +405,12 @@ const App: React.FC = () => {
 
         {!showPantry && !showMealPlan && !response && (
           <div className={styles.actionsWrapper}>
-            <button className={styles.pantryMainBtn} onClick={togglePantry}>SPICHLERZ</button>
-            <button className={styles.mealsMainBtn} onClick={toggleMealPlan}>JADŁOSPISY</button>
+            <button className={styles.pantryMainBtn} onClick={togglePantry}>
+              SPICHLERZ
+            </button>
+            <button className={styles.mealsMainBtn} onClick={toggleMealPlan}>
+              JADŁOSPISY
+            </button>
           </div>
         )}
 
