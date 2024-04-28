@@ -2,7 +2,6 @@
   font-size: 0.9rem;
   width: 100%;
   margin-top: 2rem;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,13 +10,9 @@
 
 .copy p {
   text-align: center;
+  color: var(--dark-color);
   padding: 8px 0;
-  position: absolute;
-  top: 10px;
-  left: 100px;
-  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
