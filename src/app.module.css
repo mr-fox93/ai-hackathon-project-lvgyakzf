@@ -1,228 +1,301 @@
 .chip {
-	display: inline-block;
-	padding: 8px;
-	border-radius: 25px;
-	background-color: #e0e0e0;
-	margin: 5px;
+  display: inline-block;
+  padding: 8px;
+  border-radius: 25px;
+  background-color: #e0e0e0;
+  margin: 5px;
 
-	transition: background-color 0.3s;
+  transition: background-color 0.3s;
 }
 .chip:hover {
-	background-color: #aeaeae;
+  background-color: #aeaeae;
 }
 
 .chip > div {
-	cursor: pointer;
-	background-color: red;
+  cursor: pointer;
+  background-color: red;
 }
 
 .textarea {
-	margin-top: 10px;
-	width: 100%;
+  margin-top: 10px;
+  width: 100%;
 
-	padding: 5px;
-	height: 100px;
+  padding: 5px;
+  height: 100px;
 }
 
 .buttonAdd {
-	width: 250px;
-	height: 50px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 10px;
+  width: 250px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .mag {
-	width: 80px;
-	height: 50px;
-	position: absolute;
-	right: 5px;
-	bottom: 200px;
+  width: 80px;
+  height: 50px;
+  position: absolute;
+  right: 5px;
+  bottom: 200px;
 }
 
 .container {
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-	align-items: center;
-	padding: 10px;
-	position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  position: relative;
+  background-color: white;
 }
 
 .buttonsWrapper {
-	display: flex;
-	gap: 15px;
-	justify-content: center;
-	button {
-		width: 100%;
-		height: 50px;
-		padding: 0 1rem;
-		margin-top: 10px;
-	}
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  button {
+    width: 100%;
+    background-color: var(--dark-color);
+    border: none;
+    outline: none;
+    border-radius: 50px;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.5rem 0;
+  }
 }
 
 .popupWrapper {
-	background-color: #f8f8f8;
-	padding: 10px;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+  background-color: white;
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .popupButtons {
-	display: flex;
-	justify-content: center;
-	gap: 10px;
-	button {
-		width: 150px;
-		height: 30px;
-	}
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  button {
+    width: 150px;
+    height: 30px;
+  }
 }
 
 .popupTextarea {
-	height: 100px;
-	width: 100%;
+  height: 100px;
+  width: 100%;
 }
 
 .mainWrapper {
-	width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mainWrapper textarea {
+  border-radius: 15px;
+  border: 2px solid var(--gray-color);
+  padding: 1rem;
 }
 
 .actionsWrapper {
-	position: absolute;
-	bottom: 400px;
-	right: 5px;
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	button {
-		height: 40px;
-	}
+  display: flex;
+  width: 100%;
+  align-items: center;
+
+  gap: 10px;
+  button {
+    width: 100%;
+    height: 150px;
+    background-color: var(--light-color);
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem 0;
+  }
 }
 
 .pantryContainer {
-	height: 100%;
-	width: 100%;
-	background-color: red;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--gray-color);
+  border-radius: 10px;
+  padding: 1rem;
+}
+.pantryBtnWrapper {
+  display: flex;
+  gap: 1rem;
 }
 
 .pantryBtn {
-	width: 100%;
-	height: 30px;
-	margin-top: 20px;
+  width: 100%;
+  margin-top: 20px;
+  background-color: var(--dark-color);
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.5rem 0;
 }
 .mealPlanContainer {
-	height: 100%;
-	width: 100%;
-	background-color: blue;
-	display: flex;
-	flex-direction: column-reverse;
-	flex-wrap: wrap;
-	gap: 10px;
-	position: relative;
-
+  height: 100%;
+  width: 100%;
+  background-color: inherit;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: relative;
+  border: 1px solid var(--gray-color);
+  border-radius: 10px;
+  padding: 1rem;
 }
 
 .addButton {
-	width: 100%;
-	height: 45px;
+  width: 100%;
+  background-color: var(--dark-color);
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.5rem 0;
 }
 
 .pantryList {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
-	li {
-		background-color: tomato;
-		border: 1px solid blue;
-	}
-}
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 0.5rem;
+    color: var(--dark-color);
+    border: 1px solid var(--lightgray-color);
+    background-color: inherit;
+    border-radius: 10px;
+  }
 
-.pantryBtnWrapper {
-	display: flex;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--dark-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+  }
 }
 
 .response {
-
 }
 
 .responseWrapper {
-	border: 1px solid tomato;
-	border-radius: 10px;
-	padding: 1rem;
-	width: 80%;
-	margin-left: -70px;
+  border: 1px solid tomato;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 80%;
+  margin-left: -70px;
 }
 
 .mealWrapper {
-	width: 50%;
-	height: 200px;
-	overflow: auto;
-	background-color: green;
-	padding-bottom: 50px;
-}
+
+  width: 50%;
+  height: 200px;
+  overflow: auto;
+  background-color: inherit;
+  border: 1px solid var(--gray-color);
+  border-radius: 10px;
+  padding: 1rem;
+
 
 .closeMealsBtn {
-	height: 35px;
-	position: absolute;
-	bottom: 0;
-	width: 100%;
+  width: 100%;
+  height: 30px;
+  margin-top: 20px;
+  background-color: var(--dark-color);
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .flexWrapper {
-	display: flex;
-	flex-wrap: wrap;
-	overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
 }
 
 .xIcon {
-	color: white;
-	font-size: 14px;
-	display: block;
-	width: 20px;
-	height: 20px;
-	line-height: 20px;
-	text-align: center;
-	border-radius: 50%;
-	border: 1px solid white;
-  }
-  
-  .actions {
-	margin-top: 20px;
-  }
-  
-  .closeButton,
-  .clearButton {
-	background-color: #7f52ff;
-	border: none;
-	color: white;
-	padding: 10px;
-	margin-right: 10px;
-	border-radius: 5px;
-	cursor: pointer;
-  }
-  
-  .closeButton:hover,
-  .clearButton:hover {
-	background-color: #5d3fd3;
-  }
-  
-  /* Add any other global styles you might have, like fonts, etc. */
-  
-  .speachToText {
-	background-color: #7f52ff;
-	color: white;
-	border: none;
-	border-radius: 25px;
-	padding: 10px 15px;
-	font-size: 16px;
-	cursor: pointer;
-	transition: background-color 0.3s;
-  }
+  color: white;
+  font-size: 14px;
+  display: block;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.closeButton,
+.clearButton {
+  background-color: #7f52ff;
+  border: none;
+  color: white;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.closeButton:hover,
+.clearButton:hover {
+  background-color: #5d3fd3;
+}
+
+/* Add any other global styles you might have, like fonts, etc. */
+
+.speachToText {
+  background-color: #7f52ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./Header.module.css";
-import logo from "../../assets/aishopmate_white.png";
+import logo from "../../assets/GastroGuru.png";
 
 type Props = {};
 

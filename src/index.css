@@ -1,12 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
-/* --background-main-color: #fefaf0;
---font-main-color: #10162f;
---color-beige: #fff0e5;
---color-white: #ffffff;
---color-pink: #ec4899;
---color-indigo: #6366f1;
---color-yellow: #f59e0b; */
+:root {
+  --dark-color: #0a2533;
+  --light-color: #70b9be;
+  --gray-color: #97a2b0;
+  --lightgray-color: #c6e3e5;
+}
 
 html {
   max-width: 520px;
@@ -16,8 +15,8 @@ html {
 
 body {
   max-width: 100%;
-  color: #10162f;
-  background-color: #fff0e5;
+  color: var(--dark-color);
+  background-color: white;
   font-family: "Manrope", sans-serif;
   height: 100vh;
   height: 100dvh;
@@ -54,39 +53,7 @@ button {
   cursor: pointer;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+main {
+  height: 100svh;
   height: 100vh;
-  padding: 2rem 1rem;
-}
-
-.textbox {
-  display: flex;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.textbox input {
-  padding: 0 1rem;
-  border: 1px solid #10162f;
-  width: 100%;
-  outline: none;
-}
-
-.textbox input::placeholder {
-  color: #10162f;
-  font-size: 1.2rem;
-  text-align: center;
-}
-
-.voicebox {
-  display: flex;
-  width: 100%;
-}
-
-.message {
-  padding: 0.5rem 0;
 }
