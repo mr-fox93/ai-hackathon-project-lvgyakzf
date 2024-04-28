@@ -307,23 +307,22 @@ const App: React.FC = () => {
 		)
 	}
 
-	return (
-		<div>
-			<div className={styles.container}>
-				<Header />
-				<ToastContainer
-					position='top-center'
-					autoClose={5000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					draggable
-					pauseOnHover
-				/>
-
-				{loading && <Loader />}
+  return (
+    <div>
+      <div className={styles.container}>
+        <Header />
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
 
 				{modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
 
