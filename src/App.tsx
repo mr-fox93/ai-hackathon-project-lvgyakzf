@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { fetchChatCompletion } from "./apiService";
 import styles from "./app.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
+
   addProduct,
   getProducts,
   removeProduct,
@@ -22,10 +26,11 @@ import Modal from "./components/Modal/Modal";
 import TrashIcon from "./assets/TrashIcon";
 import Copyright from "./components/Copyright/Copyright";
 
+
 interface MealPlan {
-  id: number;
-  name: string; // Add name field
-  content: string;
+	id: number
+	name: string // Add name field
+	content: string
 }
 
 const App: React.FC = () => {
@@ -40,6 +45,8 @@ const App: React.FC = () => {
   );
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const notifyGranary = () => toast("Dodano do spichlerza");
+  const notifyMealPlan = () => toast("Dodano do planu posiłków");
 
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -116,6 +123,7 @@ const App: React.FC = () => {
     }
 
     setQuickMealInput("");
+    notifyGranary();
   };
 
   const handleDeleteProduct = async (id: IDBValidKey | IDBKeyRange) => {
@@ -151,6 +159,7 @@ const App: React.FC = () => {
       setMealPlans((prev) => [...prev, newMealPlan]);
       setFavoriteName("");
       setShowAddFavorite(false);
+      notifyMealPlan();
     }
   };
 
@@ -304,6 +313,18 @@ const App: React.FC = () => {
   return (
     <div className={styles.container}>
       <Header />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
       {loading && <Loader />}
 
       {modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
@@ -312,9 +333,14 @@ const App: React.FC = () => {
         <div className={styles.responseWrapper}>
           <p className={styles.response}>{response}</p>
           <div className={styles.responseButtons}>
-            <button onClick={() => setShowAddFavorite(true)}>
+            <button
+              onClick={() => {
+                setShowAddFavorite(true);
+              }}
+            >
               DODAJ DO JADŁOSPISU
             </button>
+
             <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
             <button onClick={handleClear}>ZAMKNIJ</button>
           </div>
