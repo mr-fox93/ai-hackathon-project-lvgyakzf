@@ -266,7 +266,7 @@ const App: React.FC = () => {
     )}
        </div>
         <ul className={styles.pantryList}>
-        {products.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase())).map(product => (
+        {products.filter(product => product.name.toLowerCase().startsWith(searchTerm.toLowerCase())).map(product => (
             <li key={product.id}>
                 {product.name}
                 <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
