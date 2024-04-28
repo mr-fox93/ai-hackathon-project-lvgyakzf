@@ -18,6 +18,7 @@ import Loader from "./components/Loader/Loader";
 import Header from "./components/Header/Header";
 import CloseIcon from "./assets/CloseIcon";
 import LeftArrow from "./assets/LeftArrow";
+import Modal from "./components/Modal/Modal";
 
 interface MealPlan {
   id: number;
@@ -57,9 +58,10 @@ const App: React.FC = () => {
     setQuickMealInput,
     setResult,
     results,
-
     showPantry,
     setShowPantry,
+    setModalResponse,
+    modalResponse,
   } = useStore();
 
   const normalizeText = (text: string) =>
@@ -178,7 +180,9 @@ const App: React.FC = () => {
     const products = await getProducts(); // Pobierz produkty za pomocą funkcji getProducts
 
     if (products.length === 0) {
-      alert("TWÓJ SPICHLERZ JEST PUSTY MÓJ PANIE");
+      // alert('TWÓJ SPICHLERZ JEST PUSTY MÓJ PANIE')
+      setModalResponse("TWÓJ SPICHLERZ JEST PUSTY MÓJ PANIE");
+
       setLoading(false);
       return;
     }
@@ -187,8 +191,14 @@ const App: React.FC = () => {
 
     await fetchChatCompletion(
       `Czy mogę wykonać ten przepis: ${plan} bazując na składnikach, które mam w moim spichlerzu: ${productNames}. Sprawdź dokładnie to co mam i czy zgadza się z tym czego wymaga przepis. Jeśli mam część składników wymień te których nie mam. Jak mam zupełnie inne zaproponuj przepis do zrobienia z tego co mam.`,
-      (response: React.SetStateAction<string>) => {
-        alert(response);
+
+      // (response: React.SetStateAction<string>) => {
+      (response: string) => {
+        // Zmień tutaj typ na string
+
+        // alert(response)
+        setModalResponse(response);
+
         setLoading(false);
       },
       setLoading
@@ -267,6 +277,10 @@ const App: React.FC = () => {
     );
   };
 
+  const closeModal = () => {
+    setModalResponse(""); // Clear the modal response to hide the modal
+  };
+
   const handleGenerateBreakfast = async () => {
     setLoading(true);
     await fetchChatCompletion(
@@ -289,6 +303,8 @@ const App: React.FC = () => {
     <div className={styles.container}>
       <Header />
       {loading && <Loader />}
+
+         {modalResponse && <Modal message={modalResponse} onClose={closeModal} />
       {response && !showMealPlan && (
         <div className={styles.responseWrapper}>
           <p className={styles.response}>{response}</p>
@@ -299,6 +315,7 @@ const App: React.FC = () => {
             <button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
             <button onClick={handleClear}>ZAMKNIJ</button>
           </div>
+
         </div>
       )}
 
@@ -320,6 +337,7 @@ const App: React.FC = () => {
             placeholder="Wymyśl nazwę"
           />
           <button onClick={handleSaveFavorite}>ZAPISZ</button>
+
         </div>
       )}
 
@@ -341,6 +359,8 @@ const App: React.FC = () => {
             value={quickMealInput}
             onChange={(e) => handleUptadeTextArea(e.target.value)}
             placeholder="Wpisz produkty..."
+
+
           />
           <button
             className={styles.addButton}
@@ -350,6 +370,7 @@ const App: React.FC = () => {
             DODAJ DO SPICHLERZA
           </button>
           <div className={styles.buttonsWrapper}>
+
             <button className={styles.buttonMain} onClick={handleGenerateMeal}>
               SZYBKIE JEDZONKO
             </button>
@@ -389,6 +410,7 @@ const App: React.FC = () => {
               <button className={styles.buttonMain} onClick={toggleDropdown}>
                 KONKRETNE JEDZONKO
               </button>
+
             </div>
           </div>
           <Checkbox
@@ -408,6 +430,8 @@ const App: React.FC = () => {
               placeholder="Szukaj produktu..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+
+
             />
             {searchTerm && (
               <button
@@ -449,6 +473,7 @@ const App: React.FC = () => {
             ZAMKNIJ JADŁOSPISY
           </button>
           <div className={styles.mealsWrapper}>
+
             {mealPlans.map((plan, index) => (
               <div className={styles.mealWrapper} key={index}>
                 <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>
@@ -468,6 +493,7 @@ const App: React.FC = () => {
                     SPRAWDŹ CZY MOŻESZ
                   </button>
                 </div>
+
               </div>
             ))}
           </div>
