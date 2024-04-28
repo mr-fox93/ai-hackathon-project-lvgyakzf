@@ -323,6 +323,7 @@ const App: React.FC = () => {
       {loading && <Loader />}
 
       {modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
+
       {response && !showMealPlan && (
         <div className={styles.responseWrapper}>
           <p className={styles.response}>{response}</p>
