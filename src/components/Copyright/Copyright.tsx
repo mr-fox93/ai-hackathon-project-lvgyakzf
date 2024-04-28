@@ -4,8 +4,6 @@ import styles from "./Copyright.module.css";
 type Props = {};
 
 const Copyright = (props: Props) => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <div className={styles.copy}>
       {" "}

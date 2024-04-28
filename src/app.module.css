@@ -388,6 +388,7 @@
 .searchBox {
   display: flex;
   width: 100%;
+  margin-bottom: 1rem;
 
   input {
     width: 100%;
@@ -451,4 +452,24 @@
 .dropdownUp {
   bottom: 100%;
   top: auto;
+}
+
+.favInput {
+  padding: 1rem;
+  width: 300px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  color: var(--dark-color);
+  font-weight: bold;
+}
+
+.favButton {
+  padding: 1rem;
+  border-radius: 10px;
+  border: 2px solid white;
+  background-color: var(--dark-color);
+  color: inherit;
+  color: white;
+  font-weight: bold;
 }
