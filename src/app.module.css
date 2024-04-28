@@ -166,6 +166,7 @@
 	height: 200px;
 	overflow: auto;
 	background-color: green;
+	padding-bottom: 50px;
 }
 
 .closeMealsBtn {

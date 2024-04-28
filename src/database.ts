@@ -52,18 +52,22 @@ export async function removeProduct(id: IDBKeyRange | IDBValidKey) {
 
   //wypierdol baze
   // Funkcja do usuwania całej bazy danych
-export async function deleteDatabase() {
-    await openDB(DATABASE_NAME).then(db => {
-      db.close();
-      const deleteDBRequest = indexedDB.deleteDatabase(DATABASE_NAME);
-      deleteDBRequest.onerror = function(event) {
+  export async function deleteDatabase(onSuccess: () => void) {
+    console.log("Starting to open DB");
+    const db = await openDB(DATABASE_NAME);
+    console.log("DB opened, now closing");
+    db.close();
+    console.log("DB closed, starting to delete");
+    const deleteDBRequest = indexedDB.deleteDatabase(DATABASE_NAME);
+    deleteDBRequest.onerror = function(event) {
         console.error("Error deleting database.");
-      };
-      deleteDBRequest.onsuccess = function(event) {
+    };
+    deleteDBRequest.onsuccess = function(event) {
         console.log("Database deleted successfully");
-      };
-    });
-  }
+        onSuccess();
+    };
+}
+
   
   export async function addMealPlan(mealPlanContent: string) {
     const db = await initDB();
