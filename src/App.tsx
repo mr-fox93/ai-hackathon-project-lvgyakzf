@@ -323,6 +323,7 @@ const App: React.FC = () => {
           pauseOnHover
           theme="colored"
         />
+{loading && <Loader />}
 
 				{modalResponse && <Modal message={modalResponse} onClose={closeModal} />}
 
