@@ -18,6 +18,7 @@ import Loader from './components/Loader/Loader'
 
 interface MealPlan {
 	id: number
+	name: string // Add name field
 	content: string
 }
 
@@ -26,6 +27,9 @@ const App: React.FC = () => {
 	const [response, setResponse] = useState('')
 	const [mealPlans, setMealPlans] = useState([] as MealPlan[])
 	const [showProductNames, setShowProductNames] = useState(false)
+	const [showAddFavorite, setShowAddFavorite] = useState(false)
+	const [favoriteName, setFavoriteName] = useState('')
+	const [showMealPlanSingle, setShowMealPlanSingle] = useState<number | null>(null)
   const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
@@ -38,11 +42,12 @@ const App: React.FC = () => {
 		products,
 		setProducts,
 		quickMealInput,
+		setShowMealPlan,
+		showMealPlan,
 		setQuickMealInput,
 		setResult,
 		results,
-		showMealPlan,
-		setShowMealPlan,
+
 		showPantry,
 		setShowPantry,
 	} = useStore()
@@ -112,7 +117,6 @@ const App: React.FC = () => {
 		setShowMealPlan(!showMealPlan)
 	}
 
-	// PROMPTY I STRZAŁ DO API
 	const handleTranscription = (transcript: string) => {
 		setQuickMealInput(transcript)
 	}
@@ -121,9 +125,6 @@ const App: React.FC = () => {
 		setQuickMealInput('')
 		setResponse('')
 	}
-
-	const promptQuciky = `Bazując na tych składnikach: ${quickMealInput}, podaj mi prosty i szybki przepis do zrobienia.`
-	// const granaryQuick = `Bazując na tych składnikach: ${inputProduct}, podaj mi prosty i szybki przepis do zrobienia.`;
 
 	const handleGenerateMeal = async () => {
 		setLoading(true)
@@ -158,10 +159,12 @@ const App: React.FC = () => {
 		setInputProduct(value)
 	}
 
-	const handleAddToFavorites = async () => {
-		if (response) {
-			const newMealPlan = await addMealPlan(response)
+	const handleSaveFavorite = async () => {
+		if (favoriteName && response) {
+			const newMealPlan = await addMealPlan(favoriteName, response)
 			setMealPlans(prev => [...prev, newMealPlan])
+			setFavoriteName('')
+			setShowAddFavorite(false)
 		}
 	}
 
@@ -176,6 +179,10 @@ const App: React.FC = () => {
 		loadMealPlans()
 	}
 
+
+	const handleToggleMealPlanDisplay = (id: number) => {
+		setShowMealPlanSingle(prev => prev === id ? null : id);
+	  };
   const handleDeletePantry = async () => {
     await deleteDatabase(() => {
         setProducts([]);
@@ -189,9 +196,27 @@ const App: React.FC = () => {
 			{response && !showMealPlan && (
 				<div className={styles.responseWrapper}>
 					<p className={styles.response}>{response}</p>
-					<button onClick={handleAddToFavorites}>Add to Favorites</button>
+					<button onClick={() => setShowAddFavorite(true)}>DODAJ DO ULUBIONYCH</button>
+					<button onClick={handleGenerateMeal}>GENERUJ INNE JEDZONKO</button>
 				</div>
 			)}
+
+			{showAddFavorite && (
+				<div
+					style={{
+						position: 'fixed',
+						zIndex: 999,
+						top: '50%',
+						left: '50%',
+						transform: 'translate(-50%, -50%)',
+						backgroundColor: 'white',
+						padding: '20px',
+					}}>
+					<input value={favoriteName} onChange={e => setFavoriteName(e.target.value)} placeholder='Wymyśl nazwę' />
+					<button onClick={handleSaveFavorite}>Zapisz</button>
+				</div>
+			)}
+
 			{!showPantry && !showMealPlan && (
 				<div className={styles.actionsWrapper}>
 					<button onClick={togglePantry}>SPICHLERZ</button>
@@ -261,12 +286,16 @@ const App: React.FC = () => {
 						ZAMKNIJ JADŁOSPISY
 					</button>
 					<div className={styles.flexWrapper}>
-						{mealPlans.map((plan, index) => (
-							<div className={styles.mealWrapper} key={index}>
-								<p>{plan.content}</p>
-								<button onClick={() => handleDeleteMealPlan(plan.id)}>Delete</button>
-							</div>
-						))}
+					{mealPlans.map((plan, index) => (
+      <div className={styles.mealWrapper} key={index}>
+        <h3 onClick={() => handleToggleMealPlanDisplay(plan.id)}>{plan.name}</h3>
+        {showMealPlanSingle === plan.id && <p>{plan.content}</p>}
+        <button onClick={(e) => {
+          e.stopPropagation();
+          handleDeleteMealPlan(plan.id);
+        }}>Delete</button>
+      </div>
+    ))}
 					</div>
 				</div>
 			)}

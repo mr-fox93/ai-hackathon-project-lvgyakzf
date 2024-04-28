@@ -69,16 +69,15 @@ export async function removeProduct(id: IDBKeyRange | IDBValidKey) {
 }
 
   
-  export async function addMealPlan(mealPlanContent: string) {
+  export async function addMealPlan(name: string, content: string) {
     const db = await initDB();
     const tx = db.transaction(MEAL_PLAN_STORE_NAME, 'readwrite');
     const store = tx.objectStore(MEAL_PLAN_STORE_NAME);
-    const id = await store.add({ content: mealPlanContent });
+    const id = await store.add({ name, content });
     await tx.done;
     console.log("Added meal plan with ID:", id);
-    // Explicitly cast id to number
-    return { content: mealPlanContent, id: id as number };
-}
+    return { name, content, id: id as number };
+  }
 
 
 export async function getMealPlans() {
