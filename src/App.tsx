@@ -42,25 +42,24 @@ const App: React.FC = () => {
 	const [showMealPlanSingle, setShowMealPlanSingle] = useState<number | null>(null)
 	const [searchTerm, setSearchTerm] = useState('')
 	const [dropdownVisible, setDropdownVisible] = useState(false)
-	const notifyGranary = () => toast('Dodano do spichlerza')
-	const notifyMealPlan = () => toast('Dodano do planu posiłków')
+	const notifyGranary = () => toast.success('Dodano do spichlerza')
+	const notifyMealPlan = () => toast.success('Dodano do planu posiłków')
 
+	const dropdownRef = useRef<HTMLDivElement>(null)
 
-	const dropdownRef = useRef<HTMLDivElement>(null);
+	const handleClickOutside = (event: MouseEvent) => {
+		if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+			setDropdownVisible(false)
+		}
+	}
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setDropdownVisible(false);
-        }
-    };
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside)
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside)
+		}
+	}, [])
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-	
 	const toggleDropdown = () => {
 		setDropdownVisible(!dropdownVisible)
 	}
@@ -312,7 +311,7 @@ const App: React.FC = () => {
 		<div className={styles.container}>
 			<Header />
 			<ToastContainer
-				position='top-right'
+				position='top-center'
 				autoClose={5000}
 				hideProgressBar={false}
 				newestOnTop={false}
@@ -472,12 +471,14 @@ const App: React.FC = () => {
 
 			{showMealPlan && (
 				<div className={styles.mealPlanContainer}>
-					<button className={styles.closeMealsBtn} onClick={handleDeleteAllMealPlans}>
-						USUŃ WSZYSTKIE
-					</button>
-					<button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
-						ZAMKNIJ JADŁOSPISY
-					</button>
+					<div className={styles.pantryBtnWrapper}>
+						<button className={styles.closeMealsBtn} onClick={handleDeleteAllMealPlans}>
+							USUŃ WSZYSTKIE
+						</button>
+						<button className={styles.closeMealsBtn} onClick={toggleMealPlan}>
+							ZAMKNIJ
+						</button>
+					</div>
 					<div className={styles.mealsWrapper}>
 						{mealPlans.map((plan, index) => (
 							<div className={styles.mealWrapper} key={index}>
@@ -489,9 +490,9 @@ const App: React.FC = () => {
 											e.stopPropagation()
 											handleDeleteMealPlan(plan.id)
 										}}>
-										USUŃ
+										<TrashIcon />
 									</button>
-									<button onClick={() => checkToDoAgain(plan.content)}>SPRAWDŹ CZY MOŻESZ</button>
+									<button onClick={() => checkToDoAgain(plan.content)}>SPRAWDŹ</button>
 								</div>
 							</div>
 						))}

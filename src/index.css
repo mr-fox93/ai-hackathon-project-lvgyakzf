@@ -9,7 +9,7 @@
 }
 
 html {
-  max-width: 520px;
+  max-width: 768px;
   margin: 0 auto;
   background: #0d1117;
 }
@@ -57,9 +57,4 @@ ul {
 
 button {
   cursor: pointer;
-}
-
-main {
-  height: 100svh;
-  height: 100vh;
 }
