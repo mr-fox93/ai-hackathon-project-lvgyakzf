@@ -1,5 +1,6 @@
 # Original Repo: https://github.com/nerdbord/ai-hackathon-project-lvgyakzf
 # Live: https://nerdbord.github.io/ai-hackathon-project-lvgyakzf/  
+# Docs: https://docs.google.com/presentation/d/1_eKcnYbqd8YTqDHldrjwQCVz81XSauH-0RUowNzFgQM/edit?pli=1#slide=id.p
 
 
 
